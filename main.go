@@ -4,42 +4,63 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
+	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	zkregistry "github.com/kitex-contrib/registry-zookeeper/registry"
+	"github.com/zlllgp/vegas/biz/dal"
+	"github.com/zlllgp/vegas/conf"
 	"github.com/zlllgp/vegas/kitex_gen/api/vegas"
-	"log"
+	"gopkg.in/natefinch/lumberjack.v2"
 	"net"
-	"os"
 	"time"
 )
 
 func main() {
-	//log file
-	f, err := os.OpenFile("logs/application.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-
-	//log klog
-	klog.SetLevel(klog.LevelInfo)
-	klog.SetOutput(f)
-	klog.Infof("main las run")
-
-	//zookeeper
-	r, err := zkregistry.NewZookeeperRegistry([]string{"192.168.3.147:2181"}, 40*time.Second)
-	if err != nil {
-		panic(err)
-	}
-
+	opts := kitexInit()
 	// server
-	svr := server.NewServer(server.WithRegistry(r), server.WithServiceAddr(&net.TCPAddr{IP: net.ParseIP("192.168.3.71"), Port: 8888}), server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "vegas"}))
+	svr := server.NewServer(opts...)
 	//实例服务
 	vegasImpl := &VegasImpl{}
 	//注册服务
 	vegas.RegisterService(svr, vegasImpl)
 
-	err = svr.Run()
+	err := svr.Run()
 	if err != nil {
-		log.Println(err.Error())
+		klog.Error(err.Error())
 	}
+}
+
+func kitexInit() (opts []server.Option) {
+	// address
+	addr, err := net.ResolveTCPAddr("tcp", conf.GetConf().Kitex.Address)
+	if err != nil {
+		panic(err)
+	}
+	opts = append(opts, server.WithServiceAddr(addr))
+
+	// service info
+	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
+		ServiceName: conf.GetConf().Kitex.Service,
+	}))
+
+	// registry
+	r, err := zkregistry.NewZookeeperRegistry(conf.GetConf().Registry.RegistryAddress, 40*time.Second)
+	if err != nil {
+		panic(err)
+	}
+	opts = append(opts, server.WithRegistry(r))
+
+	// klog
+	logger := kitexlogrus.NewLogger()
+	klog.SetLogger(logger)
+	klog.SetLevel(conf.LogLevel())
+	klog.SetOutput(&lumberjack.Logger{
+		Filename:   conf.GetConf().Kitex.LogFileName,
+		MaxSize:    conf.GetConf().Kitex.LogMaxSize,
+		MaxBackups: conf.GetConf().Kitex.LogMaxBackups,
+		MaxAge:     conf.GetConf().Kitex.LogMaxAge,
+	})
+
+	// init other
+	dal.Init()
+	return
 }
