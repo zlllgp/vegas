@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option go_package = "api";
+package api;
+
+message UserRequest {
+  int32 userId = 1;
+  string userName = 2;
+  string ua = 3;
+  string idfa = 4;
+  string imei = 5;
+}
+
+message DrawRequest {
+  UserRequest uq = 1;
+  string eh = 2;
+}
+
+message RightsDTO{
+  int32 id = 1;
+  int32 num = 2;
+  string amt = 3;
+}
+
+message DrawResult {
+  string code = 1;
+  string msg = 2;
+  RightsDTO rights = 3;
+}
+
+service Vegas{
+  rpc Draw(DrawRequest) returns (DrawResult);
+}
