@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"vegas/kitex_gen/api"
+	"github.com/zlllgp/vegas/kitex_gen/api"
 )
 
 type VegasImpl struct{}

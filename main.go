@@ -5,11 +5,11 @@ import (
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	zkregistry "github.com/kitex-contrib/registry-zookeeper/registry"
+	"github.com/zlllgp/vegas/kitex_gen/api/vegas"
 	"log"
 	"net"
 	"os"
 	"time"
-	"vegas/kitex_gen/api/vegas"
 )
 
 func main() {

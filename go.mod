@@ -1,4 +1,4 @@
-module vegas
+module github.com/zlllgp/vegas
 
 go 1.22
 

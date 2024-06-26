@@ -3,7 +3,7 @@ package vegas
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	api "vegas/kitex_gen/api"
+	api "github.com/zlllgp/vegas/kitex_gen/api"
 )
 
 // NewServer creates a server.Server with the given handler and options.

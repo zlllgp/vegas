@@ -4,7 +4,7 @@ package vegas
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	api "vegas/kitex_gen/api"
+	api "github.com/zlllgp/vegas/kitex_gen/api"
 )
 
 // NewInvoker creates a server.Invoker with the given handler and options.

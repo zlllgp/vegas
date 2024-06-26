@@ -6,7 +6,7 @@ import (
 	"context"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
-	api "vegas/kitex_gen/api"
+	api "github.com/zlllgp/vegas/kitex_gen/api"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
