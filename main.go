@@ -6,8 +6,9 @@ import (
 	"github.com/cloudwego/kitex/server"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	zkregistry "github.com/kitex-contrib/registry-zookeeper/registry"
-	"github.com/zlllgp/vegas/biz/dal"
 	"github.com/zlllgp/vegas/conf"
+	"github.com/zlllgp/vegas/internal/dal/mysql"
+	"github.com/zlllgp/vegas/internal/dal/redis"
 	"github.com/zlllgp/vegas/kitex_gen/api/vegas"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"net"
@@ -61,6 +62,7 @@ func kitexInit() (opts []server.Option) {
 	})
 
 	// init other
-	dal.Init()
+	mysql.Init()
+	redis.Init()
 	return
 }

@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/zlllgp/vegas/biz/service"
+	"github.com/zlllgp/vegas/internal/service"
 	"github.com/zlllgp/vegas/kitex_gen/api"
 )
 
