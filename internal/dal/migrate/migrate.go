@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/cloudwego/kitex/tool/internal_pkg/log"
 	"github.com/zlllgp/vegas/config"
 	"github.com/zlllgp/vegas/internal/dal/model"
 	"gorm.io/driver/mysql"
@@ -24,4 +25,5 @@ func main() {
 		panic(err)
 	}
 	DB.AutoMigrate(&model.Activity{}, &model.Plan{}, &model.RuleMeta{}, &model.RuleInstance{})
+	log.Info("Auto Migration Completed")
 }
