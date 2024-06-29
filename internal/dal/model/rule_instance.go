@@ -1,17 +1,16 @@
 package model
 
 import (
-	"github.com/zlllgp/vegas/pkg/consts"
 	"gorm.io/gorm"
 )
 
+const TableNameRuleInstance = "rule_instance"
+
 type RuleInstance struct {
 	gorm.Model
-	CreatorId   int64  `json:"creator_id" column:"creator_id"`
-	CreatorName string `json:"creator_name" column:"creator_id"`
-	RuleMetaId  int64  `json:"rule_meta_id" column:"rule_meta_id"`
-	Name        string `json:"name" column:"name"`
-	Description string `json:"description" column:"description"`
+	CreatorId   int64  `gorm:"colum:creator_id;not null" json:"creator_id"`
+	CreatorName string `gorm:"colum:creator_name;not null" json:"creator_name"`
+	RuleMetaId  int64  `gorm:"colum:rule_meta_id;not null" json:"rule_meta_id"`
 }
 
-func (r *RuleInstance) TableName() string { return consts.RuleInstanceTableName }
+func (r *RuleInstance) TableName() string { return TableNameRuleInstance }

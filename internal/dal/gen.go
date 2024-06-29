@@ -13,10 +13,16 @@ var (
 	err error
 )
 
+/*
+gen https://cloud.tencent.com/developer/article/2385346
+gen https://cloud.tencent.com/developer/article/2038104
+gorm https://gorm.io/zh_CN/docs/index.html
+*/
 func main() {
 	g := gen.NewGenerator(gen.Config{
-		OutPath: "internal/dal/query",
-		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface,
+		OutPath:      "internal/dal/query",
+		Mode:         gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface,
+		WithUnitTest: false,
 	})
 
 	DB, err = gorm.Open(mysql.Open(config.GetConf().MySQL.DSN),

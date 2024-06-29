@@ -34,6 +34,7 @@ func newActivity(db *gorm.DB, opts ...gen.DOOption) activity {
 	_activity.CreatorId = field.NewInt64(tableName, "creator_id")
 	_activity.CreatorName = field.NewString(tableName, "creator_name")
 	_activity.Name = field.NewString(tableName, "name")
+	_activity.TenantId = field.NewUint8(tableName, "tenant_id not null")
 
 	_activity.fillFieldMap()
 
@@ -51,6 +52,7 @@ type activity struct {
 	CreatorId   field.Int64
 	CreatorName field.String
 	Name        field.String
+	TenantId    field.Uint8
 
 	fieldMap map[string]field.Expr
 }
@@ -74,6 +76,7 @@ func (a *activity) updateTableName(table string) *activity {
 	a.CreatorId = field.NewInt64(table, "creator_id")
 	a.CreatorName = field.NewString(table, "creator_name")
 	a.Name = field.NewString(table, "name")
+	a.TenantId = field.NewUint8(table, "tenant_id not null")
 
 	a.fillFieldMap()
 
@@ -90,7 +93,7 @@ func (a *activity) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (a *activity) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 7)
+	a.fieldMap = make(map[string]field.Expr, 8)
 	a.fieldMap["id"] = a.ID
 	a.fieldMap["created_at"] = a.CreatedAt
 	a.fieldMap["updated_at"] = a.UpdatedAt
@@ -98,6 +101,7 @@ func (a *activity) fillFieldMap() {
 	a.fieldMap["creator_id"] = a.CreatorId
 	a.fieldMap["creator_name"] = a.CreatorName
 	a.fieldMap["name"] = a.Name
+	a.fieldMap["tenant_id not null"] = a.TenantId
 }
 
 func (a activity) clone(db *gorm.DB) activity {

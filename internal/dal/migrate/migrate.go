@@ -1,21 +1,17 @@
-package initialize
+package main
 
 import (
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/zlllgp/vegas/config"
-	"github.com/zlllgp/vegas/internal/dal/query"
-
+	"github.com/zlllgp/vegas/internal/dal/model"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-var (
-	DB  *gorm.DB
-	err error
-)
-
-func InitDB() {
-	DB, err = gorm.Open(mysql.New(mysql.Config{
+/*
+model to table
+*/
+func main() {
+	DB, err := gorm.Open(mysql.New(mysql.Config{
 		DSN:               config.GetConf().MySQL.DSN,
 		DefaultStringSize: 256, // string 类型字段的默认长度
 	}),
@@ -24,11 +20,8 @@ func InitDB() {
 			SkipDefaultTransaction: true,
 		},
 	)
-
-	klog.Info("mysql init success")
 	if err != nil {
 		panic(err)
 	}
-
-	query.SetDefault(DB)
+	DB.AutoMigrate(&model.Activity{}, &model.Plan{}, &model.RuleMeta{}, &model.RuleInstance{})
 }

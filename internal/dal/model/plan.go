@@ -1,16 +1,17 @@
 package model
 
 import (
-	"github.com/zlllgp/vegas/pkg/consts"
 	"gorm.io/gorm"
 )
 
+const TableNamePlan = "plan"
+
 type Plan struct {
 	gorm.Model
-	CreatorId   int64  `json:"creator_id" column:"creator_id"`
-	CreatorName string `json:"creator_name" column:"creator_name"`
-	ActivityId  int64  `json:"activity_id" column:"activity_id"`
-	Name        string `json:"name" column:"name"`
+	CreatorId   int64  `gorm:"colum:creator_id;not null" json:"creator_id"`
+	CreatorName string `gorm:"colum:creator_name;not null" json:"creator_name"`
+	Name        string `gorm:"colum:name;not null" json:"name"`
+	ActivityId  int64  `gorm:"colum:activity_id;not null" json:"activity_id"`
 }
 
-func (p *Plan) TableName() string { return consts.PlanTableName }
+func (p *Plan) TableName() string { return TableNamePlan }

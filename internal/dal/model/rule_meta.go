@@ -1,16 +1,17 @@
 package model
 
 import (
-	"github.com/zlllgp/vegas/pkg/consts"
 	"gorm.io/gorm"
 )
 
+const TableNameRuleMeta = "rule_meta"
+
 type RuleMeta struct {
 	gorm.Model
-	CreatorId   int64  `json:"creator_id" column:"creator_id"`
-	CreatorName string `json:"creator_name" column:"creator_id"`
-	Name        string `json:"name" column:"name"`
-	Description string `json:"description" column:"description"`
+	CreatorId   int64  `gorm:"colum:creator_id;not null" json:"creator_id"`
+	CreatorName string `gorm:"colum:creator_name;not null" json:"creator_name"`
+	Name        string `gorm:"colum:name;not null" json:"name"`
+	Description string `gorm:"colum:description;not null" json:"description"`
 }
 
-func (r *RuleMeta) TableName() string { return consts.RuleMetaTableName }
+func (r *RuleMeta) TableName() string { return TableNameRuleMeta }
