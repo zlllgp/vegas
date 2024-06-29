@@ -6,9 +6,8 @@ import (
 	"github.com/cloudwego/kitex/server"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	zkregistry "github.com/kitex-contrib/registry-zookeeper/registry"
-	"github.com/zlllgp/vegas/conf"
-	"github.com/zlllgp/vegas/internal/dal/mysql"
-	"github.com/zlllgp/vegas/internal/dal/redis"
+	"github.com/zlllgp/vegas/config"
+	"github.com/zlllgp/vegas/initialize"
 	"github.com/zlllgp/vegas/kitex_gen/api/vegas"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"net"
@@ -32,7 +31,7 @@ func main() {
 
 func kitexInit() (opts []server.Option) {
 	// address
-	addr, err := net.ResolveTCPAddr("tcp", conf.GetConf().Kitex.Address)
+	addr, err := net.ResolveTCPAddr("tcp", config.GetConf().Kitex.Address)
 	if err != nil {
 		panic(err)
 	}
@@ -40,11 +39,11 @@ func kitexInit() (opts []server.Option) {
 
 	// service info
 	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
-		ServiceName: conf.GetConf().Kitex.Service,
+		ServiceName: config.GetConf().Kitex.Service,
 	}))
 
 	// registry
-	r, err := zkregistry.NewZookeeperRegistry(conf.GetConf().Registry.RegistryAddress, 40*time.Second)
+	r, err := zkregistry.NewZookeeperRegistry(config.GetConf().Registry.RegistryAddress, 40*time.Second)
 	if err != nil {
 		panic(err)
 	}
@@ -53,16 +52,16 @@ func kitexInit() (opts []server.Option) {
 	// klog
 	logger := kitexlogrus.NewLogger()
 	klog.SetLogger(logger)
-	klog.SetLevel(conf.LogLevel())
+	klog.SetLevel(config.LogLevel())
 	klog.SetOutput(&lumberjack.Logger{
-		Filename:   conf.GetConf().Kitex.LogFileName,
-		MaxSize:    conf.GetConf().Kitex.LogMaxSize,
-		MaxBackups: conf.GetConf().Kitex.LogMaxBackups,
-		MaxAge:     conf.GetConf().Kitex.LogMaxAge,
+		Filename:   config.GetConf().Kitex.LogFileName,
+		MaxSize:    config.GetConf().Kitex.LogMaxSize,
+		MaxBackups: config.GetConf().Kitex.LogMaxBackups,
+		MaxAge:     config.GetConf().Kitex.LogMaxAge,
 	})
 
 	// init other
-	mysql.Init()
-	redis.Init()
+	initialize.InitDB()
+	initialize.InitRedis()
 	return
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/zlllgp/vegas/conf"
+	"github.com/zlllgp/vegas/config"
 	"github.com/zlllgp/vegas/internal/dal/model"
 	"gorm.io/driver/mysql"
 	"gorm.io/gen"
@@ -15,11 +15,11 @@ var (
 
 func main() {
 	g := gen.NewGenerator(gen.Config{
-		OutPath: "../query",
+		OutPath: "internal/dal/query",
 		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface,
 	})
 
-	DB, err = gorm.Open(mysql.Open(conf.GetConf().MySQL.DSN),
+	DB, err = gorm.Open(mysql.Open(config.GetConf().MySQL.DSN),
 		&gorm.Config{
 			PrepareStmt:            true,
 			SkipDefaultTransaction: true,

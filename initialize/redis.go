@@ -1,20 +1,20 @@
-package redis
+package initialize
 
 import (
 	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/redis/go-redis/v9"
-	"github.com/zlllgp/vegas/conf"
+	"github.com/zlllgp/vegas/config"
 )
 
 var RedisClient *redis.Client
 
-func Init() {
+func InitRedis() {
 	RedisClient = redis.NewClient(&redis.Options{
-		Addr:     conf.GetConf().Redis.Address,
-		Username: conf.GetConf().Redis.Username,
-		Password: conf.GetConf().Redis.Password,
-		DB:       conf.GetConf().Redis.DB,
+		Addr:     config.GetConf().Redis.Address,
+		Username: config.GetConf().Redis.Username,
+		Password: config.GetConf().Redis.Password,
+		DB:       config.GetConf().Redis.DB,
 	})
 	klog.Info("redis init success")
 	if err := RedisClient.Ping(context.Background()).Err(); err != nil {
