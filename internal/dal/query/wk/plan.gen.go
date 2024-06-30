@@ -16,7 +16,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	model "github.com/zlllgp/vegas/internal/repository/model/wk"
+	model "github.com/zlllgp/vegas/internal/dal/model/wk"
 )
 
 func newPlan(db *gorm.DB, opts ...gen.DOOption) plan {

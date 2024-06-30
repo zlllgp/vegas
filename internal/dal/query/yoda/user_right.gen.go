@@ -16,7 +16,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	model "github.com/zlllgp/vegas/internal/repository/model/yoda"
+	model "github.com/zlllgp/vegas/internal/dal/model/yoda"
 )
 
 func newUerRight(db *gorm.DB, opts ...gen.DOOption) uerRight {

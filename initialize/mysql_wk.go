@@ -3,7 +3,7 @@ package initialize
 import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/zlllgp/vegas/config"
-	"github.com/zlllgp/vegas/internal/repository/query/wk"
+	"github.com/zlllgp/vegas/internal/dal/query/wk"
 	"gorm.io/gorm/logger"
 	"log"
 	"os"
