@@ -12,7 +12,7 @@ import (
 model to table
 */
 func main() {
-	DB, err := gorm.Open(mysql.New(mysql.Config{
+	db, err := gorm.Open(mysql.New(mysql.Config{
 		DSN:               config.GetConf().MySQL.DSN,
 		DefaultStringSize: 256, // string 类型字段的默认长度
 	}),
@@ -24,6 +24,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	DB.AutoMigrate(&model.Activity{}, &model.Plan{}, &model.RuleMeta{}, &model.RuleInstance{})
+	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
+		&model.Activity{}, &model.Plan{}, &model.RuleMeta{}, &model.RuleInstance{})
 	log.Info("Auto Migration Completed")
 }

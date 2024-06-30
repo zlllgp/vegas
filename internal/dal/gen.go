@@ -9,14 +9,18 @@ import (
 )
 
 var (
-	DB  *gorm.DB
+	db  *gorm.DB
 	err error
 )
 
 /*
+doc
+gen https://gorm.io/zh_CN/gen/
+gorm https://gorm.io/zh_CN/docs/index.html
+
+how to use
 gen https://cloud.tencent.com/developer/article/2385346
 gen https://cloud.tencent.com/developer/article/2038104
-gorm https://gorm.io/zh_CN/docs/index.html
 */
 func main() {
 	g := gen.NewGenerator(gen.Config{
@@ -25,14 +29,14 @@ func main() {
 		WithUnitTest: false,
 	})
 
-	DB, err = gorm.Open(mysql.Open(config.GetConf().MySQL.DSN),
+	db, err = gorm.Open(mysql.Open(config.GetConf().MySQL.DSN),
 		&gorm.Config{
 			PrepareStmt:            true,
 			SkipDefaultTransaction: true,
 		},
 	)
 
-	g.UseDB(DB)
+	g.UseDB(db)
 	g.ApplyBasic(model.Activity{}, model.Plan{}, model.RuleMeta{}, model.RuleInstance{})
 	g.ApplyInterface(func() {}, model.Activity{}, model.Plan{}, model.RuleMeta{}, model.RuleInstance{})
 	g.Execute()
