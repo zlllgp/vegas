@@ -61,7 +61,8 @@ func kitexInit() (opts []server.Option) {
 	})
 
 	// init other
-	initialize.InitDB()
+	initialize.InitWkDB()
+	initialize.InitYodaDB()
 	initialize.InitRedis()
 	return
 }

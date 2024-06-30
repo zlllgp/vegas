@@ -1,17 +1,17 @@
-package model
+package wk
 
 import (
 	"gorm.io/gorm"
 )
 
-const TableNameRuleMeta = "rule_meta"
+const TableNamePlan = "plan"
 
-type RuleMeta struct {
+type Plan struct {
 	gorm.Model
 	CreatorId   int64  `gorm:"colum:creator_id;not null" json:"creator_id"`
 	CreatorName string `gorm:"colum:creator_name;not null" json:"creator_name"`
 	Name        string `gorm:"colum:name;not null" json:"name"`
-	Description string `gorm:"colum:description;not null" json:"description"`
+	ActivityId  int64  `gorm:"colum:activity_id;not null" json:"activity_id"`
 }
 
-func (r *RuleMeta) TableName() string { return TableNameRuleMeta }
+func (p *Plan) TableName() string { return TableNamePlan }

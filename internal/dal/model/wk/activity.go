@@ -1,4 +1,4 @@
-package model
+package wk
 
 import (
 	"gorm.io/gorm"

@@ -3,8 +3,7 @@ package service
 import (
 	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/zlllgp/vegas/internal/dal/model"
-	"github.com/zlllgp/vegas/internal/dal/query"
+	"github.com/zlllgp/vegas/internal/dal/query/wk"
 	"github.com/zlllgp/vegas/kitex_gen/api"
 )
 
@@ -17,13 +16,13 @@ func NewVegasService(ctx context.Context) *VegasService {
 }
 
 func (s *VegasService) Draw(req *api.DrawRequest) (resp *api.DrawResult, err error) {
-	u := query.Q.Activity
+	u := wk.Q.Activity
 	// create
-	activityCrate := model.Activity{CreatorId: 1, CreatorName: "test002", Name: "测试活动3", TenantId: 1}
+	/*activityCrate := model.Activity{CreatorId: 1, CreatorName: "test002", Name: "测试活动3", TenantId: 1}
 	err = u.Create(&activityCrate)
 	if err != nil {
 		return nil, err
-	}
+	}*/
 
 	// transaction todo fix
 	/*q := query.Use(db)
@@ -35,6 +34,9 @@ func (s *VegasService) Draw(req *api.DrawRequest) (resp *api.DrawResult, err err
 	if err != nil {
 		return nil, err
 	}*/
+
+	// redis
+
 	// query
 	activityResult, _ := u.Select(u.ALL).Where(u.ID.In(1)).First()
 	klog.Info("query activity :", activityResult)

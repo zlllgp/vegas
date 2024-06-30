@@ -3,6 +3,7 @@ module github.com/zlllgp/vegas
 go 1.22
 
 require (
+	github.com/bytedance/go-tagexpr/v2 v2.9.2
 	github.com/cloudwego/fastpb v0.0.4
 	github.com/cloudwego/kitex v0.10.1
 	github.com/golang/protobuf v1.5.4 // indirect
@@ -45,6 +46,8 @@ require (
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/go-zookeeper/zk v1.0.2 // indirect
 	github.com/google/pprof v0.0.0-20220608213341-c488b8fa1db3 // indirect
+	github.com/henrylee2cn/ameda v1.4.10 // indirect
+	github.com/henrylee2cn/goutil v0.0.0-20210127050712-89660552f6f8 // indirect
 	github.com/iancoleman/strcase v0.2.0 // indirect
 	github.com/jhump/protoreflect v1.8.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
@@ -55,6 +58,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
 	github.com/modern-go/gls v0.0.0-20220109145502-612d0167dce5 // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
+	github.com/nyaruka/phonenumbers v1.0.55 // indirect
 	github.com/oleiade/lane v1.0.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/sirupsen/logrus v1.9.2 // indirect

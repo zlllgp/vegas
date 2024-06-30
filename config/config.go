@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/bytedance/go-tagexpr/v2/validator"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -8,7 +9,6 @@ import (
 
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/kr/pretty"
-	"gopkg.in/validator.v2"
 	"gopkg.in/yaml.v2"
 )
 
@@ -18,11 +18,12 @@ var (
 )
 
 type Config struct {
-	Env      string
-	Kitex    Kitex    `yaml:"kitex"`
-	MySQL    MySQL    `yaml:"mysql"`
-	Redis    Redis    `yaml:"redis"`
-	Registry Registry `yaml:"registry"`
+	Env       string
+	Kitex     Kitex    `yaml:"kitex"`
+	MySQLWk   MySQL    `yaml:"mysql-wk"`
+	MySQLYoda MySQL    `yaml:"mysql-yoda"`
+	Redis     Redis    `yaml:"redis"`
+	Registry  Registry `yaml:"registry"`
 }
 
 type MySQL struct {
