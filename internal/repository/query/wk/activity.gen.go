@@ -16,14 +16,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/zlllgp/vegas/internal/dal/model/wk"
+	model "github.com/zlllgp/vegas/internal/repository/model/wk"
 )
 
 func newActivity(db *gorm.DB, opts ...gen.DOOption) activity {
 	_activity := activity{}
 
 	_activity.activityDo.UseDB(db, opts...)
-	_activity.activityDo.UseModel(&wk.Activity{})
+	_activity.activityDo.UseModel(&model.Activity{})
 
 	tableName := _activity.activityDo.TableName()
 	_activity.ALL = field.NewAsterisk(tableName)
@@ -149,17 +149,17 @@ type IActivityDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IActivityDo
 	Unscoped() IActivityDo
-	Create(values ...*wk.Activity) error
-	CreateInBatches(values []*wk.Activity, batchSize int) error
-	Save(values ...*wk.Activity) error
-	First() (*wk.Activity, error)
-	Take() (*wk.Activity, error)
-	Last() (*wk.Activity, error)
-	Find() ([]*wk.Activity, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*wk.Activity, err error)
-	FindInBatches(result *[]*wk.Activity, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*model.Activity) error
+	CreateInBatches(values []*model.Activity, batchSize int) error
+	Save(values ...*model.Activity) error
+	First() (*model.Activity, error)
+	Take() (*model.Activity, error)
+	Last() (*model.Activity, error)
+	Find() ([]*model.Activity, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.Activity, err error)
+	FindInBatches(result *[]*model.Activity, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*wk.Activity) (info gen.ResultInfo, err error)
+	Delete(...*model.Activity) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -171,9 +171,9 @@ type IActivityDo interface {
 	Assign(attrs ...field.AssignExpr) IActivityDo
 	Joins(fields ...field.RelationField) IActivityDo
 	Preload(fields ...field.RelationField) IActivityDo
-	FirstOrInit() (*wk.Activity, error)
-	FirstOrCreate() (*wk.Activity, error)
-	FindByPage(offset int, limit int) (result []*wk.Activity, count int64, err error)
+	FirstOrInit() (*model.Activity, error)
+	FirstOrCreate() (*model.Activity, error)
+	FindByPage(offset int, limit int) (result []*model.Activity, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IActivityDo
@@ -273,57 +273,57 @@ func (a activityDo) Unscoped() IActivityDo {
 	return a.withDO(a.DO.Unscoped())
 }
 
-func (a activityDo) Create(values ...*wk.Activity) error {
+func (a activityDo) Create(values ...*model.Activity) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return a.DO.Create(values)
 }
 
-func (a activityDo) CreateInBatches(values []*wk.Activity, batchSize int) error {
+func (a activityDo) CreateInBatches(values []*model.Activity, batchSize int) error {
 	return a.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (a activityDo) Save(values ...*wk.Activity) error {
+func (a activityDo) Save(values ...*model.Activity) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return a.DO.Save(values)
 }
 
-func (a activityDo) First() (*wk.Activity, error) {
+func (a activityDo) First() (*model.Activity, error) {
 	if result, err := a.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*wk.Activity), nil
+		return result.(*model.Activity), nil
 	}
 }
 
-func (a activityDo) Take() (*wk.Activity, error) {
+func (a activityDo) Take() (*model.Activity, error) {
 	if result, err := a.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*wk.Activity), nil
+		return result.(*model.Activity), nil
 	}
 }
 
-func (a activityDo) Last() (*wk.Activity, error) {
+func (a activityDo) Last() (*model.Activity, error) {
 	if result, err := a.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*wk.Activity), nil
+		return result.(*model.Activity), nil
 	}
 }
 
-func (a activityDo) Find() ([]*wk.Activity, error) {
+func (a activityDo) Find() ([]*model.Activity, error) {
 	result, err := a.DO.Find()
-	return result.([]*wk.Activity), err
+	return result.([]*model.Activity), err
 }
 
-func (a activityDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*wk.Activity, err error) {
-	buf := make([]*wk.Activity, 0, batchSize)
+func (a activityDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.Activity, err error) {
+	buf := make([]*model.Activity, 0, batchSize)
 	err = a.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -331,7 +331,7 @@ func (a activityDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) er
 	return results, err
 }
 
-func (a activityDo) FindInBatches(result *[]*wk.Activity, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (a activityDo) FindInBatches(result *[]*model.Activity, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return a.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -357,23 +357,23 @@ func (a activityDo) Preload(fields ...field.RelationField) IActivityDo {
 	return &a
 }
 
-func (a activityDo) FirstOrInit() (*wk.Activity, error) {
+func (a activityDo) FirstOrInit() (*model.Activity, error) {
 	if result, err := a.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*wk.Activity), nil
+		return result.(*model.Activity), nil
 	}
 }
 
-func (a activityDo) FirstOrCreate() (*wk.Activity, error) {
+func (a activityDo) FirstOrCreate() (*model.Activity, error) {
 	if result, err := a.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*wk.Activity), nil
+		return result.(*model.Activity), nil
 	}
 }
 
-func (a activityDo) FindByPage(offset int, limit int) (result []*wk.Activity, count int64, err error) {
+func (a activityDo) FindByPage(offset int, limit int) (result []*model.Activity, count int64, err error) {
 	result, err = a.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -402,7 +402,7 @@ func (a activityDo) Scan(result interface{}) (err error) {
 	return a.DO.Scan(result)
 }
 
-func (a activityDo) Delete(models ...*wk.Activity) (result gen.ResultInfo, err error) {
+func (a activityDo) Delete(models ...*model.Activity) (result gen.ResultInfo, err error) {
 	return a.DO.Delete(models)
 }
 

@@ -16,14 +16,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/zlllgp/vegas/internal/dal/model/yoda"
+	model "github.com/zlllgp/vegas/internal/repository/model/yoda"
 )
 
 func newUerRight(db *gorm.DB, opts ...gen.DOOption) uerRight {
 	_uerRight := uerRight{}
 
 	_uerRight.uerRightDo.UseDB(db, opts...)
-	_uerRight.uerRightDo.UseModel(&yoda.UerRight{})
+	_uerRight.uerRightDo.UseModel(&model.UerRight{})
 
 	tableName := _uerRight.uerRightDo.TableName()
 	_uerRight.ALL = field.NewAsterisk(tableName)
@@ -153,17 +153,17 @@ type IUerRightDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IUerRightDo
 	Unscoped() IUerRightDo
-	Create(values ...*yoda.UerRight) error
-	CreateInBatches(values []*yoda.UerRight, batchSize int) error
-	Save(values ...*yoda.UerRight) error
-	First() (*yoda.UerRight, error)
-	Take() (*yoda.UerRight, error)
-	Last() (*yoda.UerRight, error)
-	Find() ([]*yoda.UerRight, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*yoda.UerRight, err error)
-	FindInBatches(result *[]*yoda.UerRight, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*model.UerRight) error
+	CreateInBatches(values []*model.UerRight, batchSize int) error
+	Save(values ...*model.UerRight) error
+	First() (*model.UerRight, error)
+	Take() (*model.UerRight, error)
+	Last() (*model.UerRight, error)
+	Find() ([]*model.UerRight, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.UerRight, err error)
+	FindInBatches(result *[]*model.UerRight, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*yoda.UerRight) (info gen.ResultInfo, err error)
+	Delete(...*model.UerRight) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -175,9 +175,9 @@ type IUerRightDo interface {
 	Assign(attrs ...field.AssignExpr) IUerRightDo
 	Joins(fields ...field.RelationField) IUerRightDo
 	Preload(fields ...field.RelationField) IUerRightDo
-	FirstOrInit() (*yoda.UerRight, error)
-	FirstOrCreate() (*yoda.UerRight, error)
-	FindByPage(offset int, limit int) (result []*yoda.UerRight, count int64, err error)
+	FirstOrInit() (*model.UerRight, error)
+	FirstOrCreate() (*model.UerRight, error)
+	FindByPage(offset int, limit int) (result []*model.UerRight, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IUerRightDo
@@ -277,57 +277,57 @@ func (u uerRightDo) Unscoped() IUerRightDo {
 	return u.withDO(u.DO.Unscoped())
 }
 
-func (u uerRightDo) Create(values ...*yoda.UerRight) error {
+func (u uerRightDo) Create(values ...*model.UerRight) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return u.DO.Create(values)
 }
 
-func (u uerRightDo) CreateInBatches(values []*yoda.UerRight, batchSize int) error {
+func (u uerRightDo) CreateInBatches(values []*model.UerRight, batchSize int) error {
 	return u.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (u uerRightDo) Save(values ...*yoda.UerRight) error {
+func (u uerRightDo) Save(values ...*model.UerRight) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return u.DO.Save(values)
 }
 
-func (u uerRightDo) First() (*yoda.UerRight, error) {
+func (u uerRightDo) First() (*model.UerRight, error) {
 	if result, err := u.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*yoda.UerRight), nil
+		return result.(*model.UerRight), nil
 	}
 }
 
-func (u uerRightDo) Take() (*yoda.UerRight, error) {
+func (u uerRightDo) Take() (*model.UerRight, error) {
 	if result, err := u.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*yoda.UerRight), nil
+		return result.(*model.UerRight), nil
 	}
 }
 
-func (u uerRightDo) Last() (*yoda.UerRight, error) {
+func (u uerRightDo) Last() (*model.UerRight, error) {
 	if result, err := u.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*yoda.UerRight), nil
+		return result.(*model.UerRight), nil
 	}
 }
 
-func (u uerRightDo) Find() ([]*yoda.UerRight, error) {
+func (u uerRightDo) Find() ([]*model.UerRight, error) {
 	result, err := u.DO.Find()
-	return result.([]*yoda.UerRight), err
+	return result.([]*model.UerRight), err
 }
 
-func (u uerRightDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*yoda.UerRight, err error) {
-	buf := make([]*yoda.UerRight, 0, batchSize)
+func (u uerRightDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.UerRight, err error) {
+	buf := make([]*model.UerRight, 0, batchSize)
 	err = u.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -335,7 +335,7 @@ func (u uerRightDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) er
 	return results, err
 }
 
-func (u uerRightDo) FindInBatches(result *[]*yoda.UerRight, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (u uerRightDo) FindInBatches(result *[]*model.UerRight, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return u.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -361,23 +361,23 @@ func (u uerRightDo) Preload(fields ...field.RelationField) IUerRightDo {
 	return &u
 }
 
-func (u uerRightDo) FirstOrInit() (*yoda.UerRight, error) {
+func (u uerRightDo) FirstOrInit() (*model.UerRight, error) {
 	if result, err := u.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*yoda.UerRight), nil
+		return result.(*model.UerRight), nil
 	}
 }
 
-func (u uerRightDo) FirstOrCreate() (*yoda.UerRight, error) {
+func (u uerRightDo) FirstOrCreate() (*model.UerRight, error) {
 	if result, err := u.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*yoda.UerRight), nil
+		return result.(*model.UerRight), nil
 	}
 }
 
-func (u uerRightDo) FindByPage(offset int, limit int) (result []*yoda.UerRight, count int64, err error) {
+func (u uerRightDo) FindByPage(offset int, limit int) (result []*model.UerRight, count int64, err error) {
 	result, err = u.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -406,7 +406,7 @@ func (u uerRightDo) Scan(result interface{}) (err error) {
 	return u.DO.Scan(result)
 }
 
-func (u uerRightDo) Delete(models ...*yoda.UerRight) (result gen.ResultInfo, err error) {
+func (u uerRightDo) Delete(models ...*model.UerRight) (result gen.ResultInfo, err error) {
 	return u.DO.Delete(models)
 }
 

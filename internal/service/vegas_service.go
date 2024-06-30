@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/zlllgp/vegas/internal/dal/query/wk"
+	"github.com/zlllgp/vegas/internal/repository/query/wk"
 	"github.com/zlllgp/vegas/kitex_gen/api"
 )
 

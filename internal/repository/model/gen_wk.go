@@ -2,10 +2,15 @@ package main
 
 import (
 	"github.com/zlllgp/vegas/config"
-	"github.com/zlllgp/vegas/internal/dal/model/yoda"
+	"github.com/zlllgp/vegas/internal/repository/model/wk"
 	"gorm.io/driver/mysql"
 	"gorm.io/gen"
 	"gorm.io/gorm"
+)
+
+var (
+	db  *gorm.DB
+	err error
 )
 
 /*
@@ -18,12 +23,12 @@ gen https://cloud.tencent.com/developer/article/2038104
 */
 func main1() {
 	g := gen.NewGenerator(gen.Config{
-		OutPath:      "internal/dal/query/yoda",
+		OutPath:      "internal/repository/query/wk",
 		Mode:         gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface,
 		WithUnitTest: false,
 	})
 
-	db, err = gorm.Open(mysql.Open(config.GetConf().MySQLYoda.DSN),
+	db, err = gorm.Open(mysql.Open(config.GetConf().MySQLWk.DSN),
 		&gorm.Config{
 			PrepareStmt:            true,
 			SkipDefaultTransaction: true,
@@ -31,7 +36,7 @@ func main1() {
 	)
 
 	g.UseDB(db)
-	g.ApplyBasic(yoda.UerRight{})
-	g.ApplyInterface(func() {}, yoda.UerRight{})
+	g.ApplyBasic(model.Activity{}, model.Plan{})
+	g.ApplyInterface(func() {}, model.Activity{}, model.Plan{})
 	g.Execute()
 }

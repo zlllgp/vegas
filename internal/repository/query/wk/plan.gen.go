@@ -16,14 +16,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/zlllgp/vegas/internal/dal/model/wk"
+	model "github.com/zlllgp/vegas/internal/repository/model/wk"
 )
 
 func newPlan(db *gorm.DB, opts ...gen.DOOption) plan {
 	_plan := plan{}
 
 	_plan.planDo.UseDB(db, opts...)
-	_plan.planDo.UseModel(&wk.Plan{})
+	_plan.planDo.UseModel(&model.Plan{})
 
 	tableName := _plan.planDo.TableName()
 	_plan.ALL = field.NewAsterisk(tableName)
@@ -145,17 +145,17 @@ type IPlanDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IPlanDo
 	Unscoped() IPlanDo
-	Create(values ...*wk.Plan) error
-	CreateInBatches(values []*wk.Plan, batchSize int) error
-	Save(values ...*wk.Plan) error
-	First() (*wk.Plan, error)
-	Take() (*wk.Plan, error)
-	Last() (*wk.Plan, error)
-	Find() ([]*wk.Plan, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*wk.Plan, err error)
-	FindInBatches(result *[]*wk.Plan, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*model.Plan) error
+	CreateInBatches(values []*model.Plan, batchSize int) error
+	Save(values ...*model.Plan) error
+	First() (*model.Plan, error)
+	Take() (*model.Plan, error)
+	Last() (*model.Plan, error)
+	Find() ([]*model.Plan, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.Plan, err error)
+	FindInBatches(result *[]*model.Plan, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*wk.Plan) (info gen.ResultInfo, err error)
+	Delete(...*model.Plan) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -167,9 +167,9 @@ type IPlanDo interface {
 	Assign(attrs ...field.AssignExpr) IPlanDo
 	Joins(fields ...field.RelationField) IPlanDo
 	Preload(fields ...field.RelationField) IPlanDo
-	FirstOrInit() (*wk.Plan, error)
-	FirstOrCreate() (*wk.Plan, error)
-	FindByPage(offset int, limit int) (result []*wk.Plan, count int64, err error)
+	FirstOrInit() (*model.Plan, error)
+	FirstOrCreate() (*model.Plan, error)
+	FindByPage(offset int, limit int) (result []*model.Plan, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IPlanDo
@@ -269,57 +269,57 @@ func (p planDo) Unscoped() IPlanDo {
 	return p.withDO(p.DO.Unscoped())
 }
 
-func (p planDo) Create(values ...*wk.Plan) error {
+func (p planDo) Create(values ...*model.Plan) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return p.DO.Create(values)
 }
 
-func (p planDo) CreateInBatches(values []*wk.Plan, batchSize int) error {
+func (p planDo) CreateInBatches(values []*model.Plan, batchSize int) error {
 	return p.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (p planDo) Save(values ...*wk.Plan) error {
+func (p planDo) Save(values ...*model.Plan) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return p.DO.Save(values)
 }
 
-func (p planDo) First() (*wk.Plan, error) {
+func (p planDo) First() (*model.Plan, error) {
 	if result, err := p.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*wk.Plan), nil
+		return result.(*model.Plan), nil
 	}
 }
 
-func (p planDo) Take() (*wk.Plan, error) {
+func (p planDo) Take() (*model.Plan, error) {
 	if result, err := p.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*wk.Plan), nil
+		return result.(*model.Plan), nil
 	}
 }
 
-func (p planDo) Last() (*wk.Plan, error) {
+func (p planDo) Last() (*model.Plan, error) {
 	if result, err := p.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*wk.Plan), nil
+		return result.(*model.Plan), nil
 	}
 }
 
-func (p planDo) Find() ([]*wk.Plan, error) {
+func (p planDo) Find() ([]*model.Plan, error) {
 	result, err := p.DO.Find()
-	return result.([]*wk.Plan), err
+	return result.([]*model.Plan), err
 }
 
-func (p planDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*wk.Plan, err error) {
-	buf := make([]*wk.Plan, 0, batchSize)
+func (p planDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.Plan, err error) {
+	buf := make([]*model.Plan, 0, batchSize)
 	err = p.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -327,7 +327,7 @@ func (p planDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error)
 	return results, err
 }
 
-func (p planDo) FindInBatches(result *[]*wk.Plan, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (p planDo) FindInBatches(result *[]*model.Plan, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return p.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -353,23 +353,23 @@ func (p planDo) Preload(fields ...field.RelationField) IPlanDo {
 	return &p
 }
 
-func (p planDo) FirstOrInit() (*wk.Plan, error) {
+func (p planDo) FirstOrInit() (*model.Plan, error) {
 	if result, err := p.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*wk.Plan), nil
+		return result.(*model.Plan), nil
 	}
 }
 
-func (p planDo) FirstOrCreate() (*wk.Plan, error) {
+func (p planDo) FirstOrCreate() (*model.Plan, error) {
 	if result, err := p.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*wk.Plan), nil
+		return result.(*model.Plan), nil
 	}
 }
 
-func (p planDo) FindByPage(offset int, limit int) (result []*wk.Plan, count int64, err error) {
+func (p planDo) FindByPage(offset int, limit int) (result []*model.Plan, count int64, err error) {
 	result, err = p.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -398,7 +398,7 @@ func (p planDo) Scan(result interface{}) (err error) {
 	return p.DO.Scan(result)
 }
 
-func (p planDo) Delete(models ...*wk.Plan) (result gen.ResultInfo, err error) {
+func (p planDo) Delete(models ...*model.Plan) (result gen.ResultInfo, err error) {
 	return p.DO.Delete(models)
 }
 
