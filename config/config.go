@@ -24,6 +24,7 @@ type Config struct {
 	MySQLYoda MySQL    `yaml:"mysql-yoda"`
 	Redis     Redis    `yaml:"redis"`
 	Registry  Registry `yaml:"registry"`
+	Etcd      Etcd     `yaml:"etcd"`
 }
 
 type MySQL struct {
@@ -54,6 +55,10 @@ type Registry struct {
 	RegistryAddress []string `yaml:"registry_address"`
 	Username        string   `yaml:"username"`
 	Password        string   `yaml:"password"`
+}
+
+type Etcd struct {
+	Address string `yaml:"address"`
 }
 
 // GetConf gets configuration instance

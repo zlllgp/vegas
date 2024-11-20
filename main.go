@@ -5,13 +5,13 @@ import (
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
-	zkregistry "github.com/kitex-contrib/registry-zookeeper/registry"
+	etcd "github.com/kitex-contrib/registry-etcd"
 	"github.com/zlllgp/vegas/config"
 	"github.com/zlllgp/vegas/initialize"
 	"github.com/zlllgp/vegas/kitex_gen/api/vegas"
+	"github.com/zlllgp/vegas/pkg/consts"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"net"
-	"time"
 )
 
 func main() {
@@ -30,8 +30,13 @@ func main() {
 }
 
 func kitexInit() (opts []server.Option) {
+	ip, err := consts.GetOutBoundIP()
+	if err != nil {
+		panic(err)
+	}
+
 	// address
-	addr, err := net.ResolveTCPAddr("tcp", config.GetConf().Kitex.Address)
+	addr, err := net.ResolveTCPAddr("tcp", ip+":8080")
 	if err != nil {
 		panic(err)
 	}
@@ -43,10 +48,17 @@ func kitexInit() (opts []server.Option) {
 	}))
 
 	// registry
-	r, err := zkregistry.NewZookeeperRegistry(config.GetConf().Registry.RegistryAddress, 40*time.Second)
+	//r, err := zkregistry.NewZookeeperRegistry(config.GetConf().Registry.RegistryAddress, 40*time.Second)
+	//if err != nil {
+	//	panic(err)
+	//}
+
+	//etcd
+	r, err := etcd.NewEtcdRegistry([]string{config.GetConf().Etcd.Address})
 	if err != nil {
 		panic(err)
 	}
+
 	opts = append(opts, server.WithRegistry(r))
 
 	// klog

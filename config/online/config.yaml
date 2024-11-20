@@ -13,6 +13,9 @@ registry:
   username: ""
   password: ""
 
+etcd:
+  address: "192.168.3.117:2379"
+
 mysql-wk:
   dsn: "root:root@tcp(192.168.3.208:3306)/wk?charset=utf8mb4&parseTime=True&loc=Local"
 
