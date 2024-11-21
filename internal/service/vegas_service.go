@@ -39,7 +39,8 @@ func (s *VegasService) Draw(req *api.DrawRequest) (resp *api.DrawResult, err err
 
 	// query
 	activityResult, _ := u.Select(u.ALL).Where(u.ID.In(1)).First()
-	klog.Info("query activity :", activityResult)
+	klog.Infof("query activity : %T", activityResult)
+	klog.Infof("eh : %s , userName : %s", req.Eh, req.UserName)
 	resp = &api.DrawResult{Code: "SUCCESS", Msg: "", Rights: &api.RightsDTO{Id: 1, Num: 1, Amt: "10"}}
-	return
+	return resp, nil
 }
