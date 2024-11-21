@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cloudwego/kitex/pkg/limit"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
@@ -14,6 +15,7 @@ import (
 	"github.com/zlllgp/vegas/pkg/mw"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"net"
+	"time"
 )
 
 func main() {
@@ -60,11 +62,16 @@ func kitexInit() (opts []server.Option) {
 	if err != nil {
 		panic(err)
 	}
-
 	opts = append(opts, server.WithRegistry(r))
 
 	//middleware
 	opts = append(opts, server.WithMiddleware(mw.CommonMiddleware), server.WithMiddleware(mw.ServerMiddleware))
+
+	//timeout
+	opts = append(opts, server.WithReadWriteTimeout(3*time.Second))
+
+	//limit
+	opts = append(opts, server.WithLimit(&limit.Option{MaxConnections: 10000, MaxQPS: 10000}))
 
 	// klog
 	logger := kitexlogrus.NewLogger()
