@@ -11,6 +11,7 @@ import (
 	"github.com/zlllgp/vegas/internal/redis"
 	"github.com/zlllgp/vegas/kitex_gen/api/vegas"
 	"github.com/zlllgp/vegas/pkg/consts"
+	"github.com/zlllgp/vegas/pkg/mw"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"net"
 )
@@ -61,6 +62,9 @@ func kitexInit() (opts []server.Option) {
 	}
 
 	opts = append(opts, server.WithRegistry(r))
+
+	//middleware
+	opts = append(opts, server.WithMiddleware(mw.CommonMiddleware), server.WithMiddleware(mw.ServerMiddleware))
 
 	// klog
 	logger := kitexlogrus.NewLogger()
