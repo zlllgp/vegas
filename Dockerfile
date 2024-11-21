@@ -1,7 +1,7 @@
 #
 # Build stage
 #
-FROM golang:1.23.3-alpine3.20 AS build
+FROM docker.unsee.tech/golang:1.23.3-alpine3.20 AS build
 WORKDIR /code
 COPY . .
 RUN go env -w GOPROXY=https://goproxy.cn,direct
@@ -11,7 +11,7 @@ RUN ["sh", "build.sh"]
 #
 # Package stage
 #
-FROM golang:1.23.3-alpine3.20
+FROM docker.unsee.tech/golang:1.23.3-alpine3.20
 ARG APP_NAME
 ENV APP_NAME $APP_NAME
 ENV USER=admin \
