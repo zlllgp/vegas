@@ -2,6 +2,7 @@
 # Build stage
 #
 FROM docker.unsee.tech/golang:1.23.3-alpine3.20 AS build
+RUN apk add --no-cache git
 WORKDIR /code
 COPY . .
 RUN go env -w GOPROXY=https://goproxy.cn,direct
