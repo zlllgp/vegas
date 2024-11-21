@@ -25,5 +25,5 @@ COPY --from=build /code/output/bootstrap.sh $APP_HOME/bootstrap.sh
 RUN chmod -R 755 $APP_HOME
 WORKDIR $APP_HOME
 EXPOSE 8080
-ENTRYPOINT ["/bin/bash","/home/admin/bootstrap.sh"]
+ENTRYPOINT ["sh","/home/admin/bootstrap.sh"]
 #ENTRYPOINT ["./home/admin/bin/vegas"] todo fix config dir not found
