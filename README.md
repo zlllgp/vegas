@@ -17,3 +17,5 @@ github 页面上发布 release
 go mod edit -droprequire=github.com/apache/thrift/lib/go/thrift
 go mod edit -replace=github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 ```
+
+docker export xxx > docker.tar
