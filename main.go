@@ -7,7 +7,8 @@ import (
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	etcd "github.com/kitex-contrib/registry-etcd"
 	"github.com/zlllgp/vegas/config"
-	"github.com/zlllgp/vegas/initialize"
+	"github.com/zlllgp/vegas/internal/dal"
+	"github.com/zlllgp/vegas/internal/redis"
 	"github.com/zlllgp/vegas/kitex_gen/api/vegas"
 	"github.com/zlllgp/vegas/pkg/consts"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -73,8 +74,8 @@ func kitexInit() (opts []server.Option) {
 	})
 
 	// init other
-	initialize.InitWkDB()
-	initialize.InitYodaDB()
-	initialize.InitRedis()
+	dal.InitWkDB()
+	dal.InitYodaDB()
+	redis.InitRedis()
 	return
 }

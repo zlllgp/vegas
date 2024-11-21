@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/zlllgp/vegas/config"
-	"github.com/zlllgp/vegas/internal/dal/model/yoda"
 	"gorm.io/driver/mysql"
 	"gorm.io/gen"
 	"gorm.io/gorm"
@@ -21,9 +20,9 @@ how to use
 gen https://cloud.tencent.com/developer/article/2385346
 gen https://cloud.tencent.com/developer/article/2038104
 */
-func main1() {
+func main() {
 	g := gen.NewGenerator(gen.Config{
-		OutPath:      "internal/dal/query/yoda",
+		OutPath:      "internal/dal/yoda/query",
 		Mode:         gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface,
 		WithUnitTest: false,
 	})
@@ -36,7 +35,8 @@ func main1() {
 	)
 
 	g.UseDB(dbYoda)
-	g.ApplyBasic(model.UerRight{})
-	g.ApplyInterface(func() {}, model.UerRight{})
+	//g.ApplyBasic(model.UerRight{})
+	//g.ApplyInterface(func() {}, model.UerRight{})
+	g.ApplyBasic(g.GenerateModel("user_right"))
 	g.Execute()
 }

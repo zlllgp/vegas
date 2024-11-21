@@ -1,9 +1,9 @@
-package initialize
+package dal
 
 import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/zlllgp/vegas/config"
-	"github.com/zlllgp/vegas/internal/dal/query/wk"
+	"github.com/zlllgp/vegas/internal/dal/yoda/query"
 	"gorm.io/gorm/logger"
 	"log"
 	"os"
@@ -14,14 +14,14 @@ import (
 )
 
 var (
-	dbWk  *gorm.DB
-	errWk error
+	dbYoda  *gorm.DB
+	errYoda error
 )
 
 /*
 gorm https://gorm.io/zh_CN/docs/index.html
 */
-func InitWkDB() {
+func InitYodaDB() {
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
@@ -33,8 +33,8 @@ func InitWkDB() {
 		},
 	)
 
-	dbWk, errWk = gorm.Open(mysql.New(mysql.Config{
-		DSN:               config.GetConf().MySQLWk.DSN,
+	dbYoda, errYoda = gorm.Open(mysql.New(mysql.Config{
+		DSN:               config.GetConf().MySQLYoda.DSN,
 		DefaultStringSize: 256, // string 类型字段的默认长度
 	}),
 		&gorm.Config{
@@ -50,10 +50,10 @@ func InitWkDB() {
 		// SetMaxOpenConns 设置打开数据库连接的最大数量。
 		sqlDB.SetMaxOpenConns(100)*/
 
-	klog.Info("mysql wk init success")
-	if errWk != nil {
-		panic(errWk)
+	klog.Info("mysql yoda init success")
+	if errYoda != nil {
+		panic(errYoda)
 	}
 
-	wk.SetDefault(dbWk)
+	query.SetDefault(dbYoda)
 }
