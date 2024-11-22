@@ -7,14 +7,13 @@ import (
 	"github.com/cloudwego/kitex/server"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	etcd "github.com/kitex-contrib/registry-etcd"
+	"github.com/zlllgp/vegas/internal/application/app"
 	"github.com/zlllgp/vegas/internal/application/config"
-	"github.com/zlllgp/vegas/internal/application/right"
-	"github.com/zlllgp/vegas/internal/application/vegas"
+	"github.com/zlllgp/vegas/internal/domain/service"
 	"github.com/zlllgp/vegas/internal/infrastructure/consts"
 	"github.com/zlllgp/vegas/internal/infrastructure/dal"
 	"github.com/zlllgp/vegas/internal/infrastructure/mw"
 	"github.com/zlllgp/vegas/internal/infrastructure/redis"
-	"github.com/zlllgp/vegas/internal/infrastructure/repository"
 	"github.com/zlllgp/vegas/internal/infrastructure/viper"
 	"github.com/zlllgp/vegas/kitex_gen/api/rightservice"
 	"github.com/zlllgp/vegas/kitex_gen/api/vegasservice"
@@ -28,10 +27,11 @@ func main() {
 
 	svr := server.NewServer(opts...)
 	// construct di
-	vegasImpl := vegas.NewVegasServiceImpl(&repository.RmbRepository{})
+	drawService := service.NewDrawService()
+	vegasImpl := app.NewVegasServiceImpl(drawService)
 	vegasservice.RegisterService(svr, vegasImpl)
 
-	rightImpl := &right.RightServiceImpl{}
+	rightImpl := app.NewRightServiceImpl()
 	rightservice.RegisterService(svr, rightImpl)
 
 	err := svr.Run()

@@ -1,4 +1,4 @@
-package right
+package app
 
 import (
 	"context"
@@ -6,11 +6,10 @@ import (
 )
 
 type RightServiceImpl struct {
-	ctx context.Context
 }
 
-func NewRightServiceImpl(ctx context.Context) *RightServiceImpl {
-	return &RightServiceImpl{ctx: ctx}
+func NewRightServiceImpl() *RightServiceImpl {
+	return &RightServiceImpl{}
 }
 
 // QueryRight implements the RightServiceImpl interface.

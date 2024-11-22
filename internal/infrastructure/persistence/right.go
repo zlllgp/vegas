@@ -1,4 +1,4 @@
-package repository
+package persistence
 
 type RightRepository struct{}
 
