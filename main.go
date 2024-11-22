@@ -13,7 +13,9 @@ import (
 	"github.com/zlllgp/vegas/internal/infrastructure/consts"
 	"github.com/zlllgp/vegas/internal/infrastructure/dal"
 	"github.com/zlllgp/vegas/internal/infrastructure/mw"
+	"github.com/zlllgp/vegas/internal/infrastructure/persistence"
 	"github.com/zlllgp/vegas/internal/infrastructure/redis"
+	"github.com/zlllgp/vegas/internal/infrastructure/rpc"
 	"github.com/zlllgp/vegas/internal/infrastructure/viper"
 	"github.com/zlllgp/vegas/kitex_gen/api/rightservice"
 	"github.com/zlllgp/vegas/kitex_gen/api/vegasservice"
@@ -26,8 +28,10 @@ func main() {
 	opts := kitexInit()
 
 	svr := server.NewServer(opts...)
-	// construct di
-	drawService := service.NewDrawService()
+	// construct
+	rmbRep := rpc.NewRmbRepository()
+	actRep := persistence.NewActivityRepository()
+	drawService := service.NewDrawService(rmbRep, actRep)
 	vegasImpl := app.NewVegasServiceImpl(drawService)
 	vegasservice.RegisterService(svr, vegasImpl)
 

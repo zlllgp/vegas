@@ -6,21 +6,21 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/zlllgp/vegas/internal/domain/entity"
 	"github.com/zlllgp/vegas/internal/infrastructure/persistence"
-	"github.com/zlllgp/vegas/internal/infrastructure/wrapper"
+	"github.com/zlllgp/vegas/internal/infrastructure/rpc"
 	"github.com/zlllgp/vegas/kitex_gen/api"
 	"strconv"
 	"time"
 )
 
 type DrawService struct {
-	rmbRep *wrapper.RmbRepository
+	rmbRep *rpc.RmbRepository
 	actRep *persistence.ActivityRepository
 }
 
-func NewDrawService() *DrawService {
+func NewDrawService(rmbRep *rpc.RmbRepository, actRep *persistence.ActivityRepository) *DrawService {
 	return &DrawService{
-		rmbRep: wrapper.NewRmbRepository(),
-		actRep: persistence.NewActivityRepository(),
+		rmbRep: rmbRep,
+		actRep: actRep,
 	}
 }
 
