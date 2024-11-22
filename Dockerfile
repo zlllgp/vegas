@@ -20,7 +20,7 @@ ENV USER=admin \
 ENV APP_HOME=/home/$USER
 RUN mkdir -p $APP_HOME/bin $APP_HOME/log
 #RUN chown -R $USER:$GROUP $APP_HOME && chmod -R 755 $APP_HOME
-COPY --from=build /code/config $APP_HOME/config
+COPY --from=build /code/conf $APP_HOME/conf
 COPY --from=build /code/output/bin/vegas $APP_HOME/bin/vegas
 COPY --from=build /code/output/bootstrap.sh $APP_HOME/bootstrap.sh
 RUN chmod -R 755 $APP_HOME

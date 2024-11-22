@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/redis/go-redis/v9"
-	"github.com/zlllgp/vegas/config"
+	"github.com/zlllgp/vegas/internal/config"
 )
 
 var rdb *redis.Client

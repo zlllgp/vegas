@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/zlllgp/vegas/config"
+	"github.com/zlllgp/vegas/internal/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gen"
 	"gorm.io/gorm"

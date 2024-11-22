@@ -7,7 +7,7 @@ import (
 	"github.com/cloudwego/kitex/server"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	"github.com/zlllgp/vegas/config"
+	"github.com/zlllgp/vegas/internal/config"
 	"github.com/zlllgp/vegas/internal/dal"
 	"github.com/zlllgp/vegas/internal/redis"
 	"github.com/zlllgp/vegas/kitex_gen/api/vegas"

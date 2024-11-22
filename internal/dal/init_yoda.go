@@ -2,7 +2,7 @@ package dal
 
 import (
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/zlllgp/vegas/config"
+	"github.com/zlllgp/vegas/internal/config"
 	"github.com/zlllgp/vegas/internal/dal/yoda/query"
 	"gorm.io/gorm/logger"
 	"log"
