@@ -22,7 +22,7 @@ type Activity struct {
 	CreatorName string         `gorm:"column:creator_name;not null" json:"creator_name"`
 	Name        string         `gorm:"column:name;not null" json:"name"`
 	TenantID    int32          `gorm:"column:tenant_id;not null" json:"tenant_id"`
-	IsDel       int64          `gorm:"column:is_del;not null" json:"is_del"`
+	IsDel       int32          `gorm:"column:is_del;not null" json:"is_del"`
 }
 
 // TableName Activity's table name

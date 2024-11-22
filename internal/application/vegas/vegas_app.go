@@ -4,23 +4,39 @@ import (
 	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/zlllgp/vegas/internal/infrastructure/dal/wk/query"
+	"github.com/zlllgp/vegas/internal/infrastructure/repository"
 	"github.com/zlllgp/vegas/kitex_gen/api"
 )
 
 type VegasServiceImpl struct {
-	//ctx context.Context
+	rmbRep *repository.RmbRepository
 }
 
-//func NewVegasServiceImpl(ctx context.Context) *VegasServiceImpl {
-//	return &VegasServiceImpl{ctx: ctx}
-//}
+func NewVegasServiceImpl(rmbRep *repository.RmbRepository) *VegasServiceImpl {
+	return &VegasServiceImpl{rmbRep: rmbRep}
+}
 
 // Draw implements the VegasServiceImpl interface.
 func (s *VegasServiceImpl) Draw(ctx context.Context, req *api.DrawRequest) (resp *api.DrawResponse, err error) {
-	u := query.Q.Activity
+	// judge safe
+	safe := s.rmbRep.IsSafe(req.User.UserId)
+	if !safe {
+		return
+	}
+	// judge activity
+
+	// has wins rights
+
+	// do draw
+
+	q := query.Q.Activity
+	// activity
+	activity, _ := q.Select(q.ALL).Where(q.ID.In(1)).First()
+	klog.Infof("query activity : %+v", activity)
+
 	// create
 	/*activityCrate := model.Activity{CreatorId: 1, CreatorName: "test002", Name: "测试活动3", TenantId: 1}
-	err = u.Create(&activityCrate)
+	err = q.Create(&activityCrate)
 	if err != nil {
 		return nil, err
 	}*/
@@ -37,11 +53,6 @@ func (s *VegasServiceImpl) Draw(ctx context.Context, req *api.DrawRequest) (resp
 	}*/
 
 	// redis
-
-	// query
-	activityResult, _ := u.Select(u.ALL).Where(u.ID.In(1)).First()
-	klog.Infof("query activity : %+v", activityResult)
-	klog.Infof("eh : %s , userName : %s", req.Eh, req.User.UserName)
 
 	right := &api.Right{Id: 1, Num: 1, Amt: "10"}
 	resp = &api.DrawResponse{Code: "SUCCESS", Msg: "", Rights: []*api.Right{right}}

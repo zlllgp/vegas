@@ -35,7 +35,7 @@ func newActivity(db *gorm.DB, opts ...gen.DOOption) activity {
 	_activity.CreatorName = field.NewString(tableName, "creator_name")
 	_activity.Name = field.NewString(tableName, "name")
 	_activity.TenantID = field.NewInt32(tableName, "tenant_id")
-	_activity.IsDel = field.NewInt64(tableName, "is_del")
+	_activity.IsDel = field.NewInt32(tableName, "is_del")
 
 	_activity.fillFieldMap()
 
@@ -54,7 +54,7 @@ type activity struct {
 	CreatorName field.String
 	Name        field.String
 	TenantID    field.Int32
-	IsDel       field.Int64
+	IsDel       field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -79,7 +79,7 @@ func (a *activity) updateTableName(table string) *activity {
 	a.CreatorName = field.NewString(table, "creator_name")
 	a.Name = field.NewString(table, "name")
 	a.TenantID = field.NewInt32(table, "tenant_id")
-	a.IsDel = field.NewInt64(table, "is_del")
+	a.IsDel = field.NewInt32(table, "is_del")
 
 	a.fillFieldMap()
 
