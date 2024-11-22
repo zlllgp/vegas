@@ -14,9 +14,9 @@ import (
 	"github.com/zlllgp/vegas/internal/infrastructure/mw"
 	"github.com/zlllgp/vegas/internal/infrastructure/redis"
 	"github.com/zlllgp/vegas/internal/infrastructure/viper"
-	"github.com/zlllgp/vegas/internal/wire"
 	"github.com/zlllgp/vegas/kitex_gen/api/rightservice"
 	"github.com/zlllgp/vegas/kitex_gen/api/vegasservice"
+	"github.com/zlllgp/vegas/wire"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"net"
 	"time"
@@ -33,9 +33,7 @@ func main() {
 		vegasImpl := app.NewVegasServiceImpl(drawService)*/
 
 	// use wire
-
-	vegasImpl := wire.InitializeVegasServiceImpl()
-
+	vegasImpl, _ := wire.InitializeVegasImplService()
 	vegasservice.RegisterService(svr, vegasImpl)
 
 	rightImpl := app.NewRightServiceImpl()

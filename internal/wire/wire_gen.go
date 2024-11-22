@@ -9,33 +9,34 @@ import (
 	"github.com/zlllgp/vegas/internal/infrastructure/rpc"
 )
 
-var ActivityRepoProviderSet = wire.NewSet(
-	persistence.NewActivityRepository,
-	wire.Bind(new(repository.ActivityRepository), new(*persistence.ActivityRepository)),
-)
+// Injectors from wire_gen.go:
 
-var RmbRepoProviderSet = wire.NewSet(
-	rpc.NewRmbRepository,
-	wire.Bind(new(repository.RmbRepository), new(*rpc.RmbRepository)),
-)
-
-var DrawServiceProviderSet = wire.NewSet(
-	service.NewDrawService,
-	ActivityRepoProviderSet,
-	RmbRepoProviderSet,
-)
-
-var VegasServiceImplProviderSet = wire.NewSet(
-	app.NewVegasServiceImpl,
-	DrawServiceProviderSet,
-)
-
-func InitializeVegasServiceImpl() *app.VegasServiceImpl {
-	wire.Build(
-		ActivityRepoProviderSet,
-		RmbRepoProviderSet,
-		DrawServiceProviderSet,
-		VegasServiceImplProviderSet,
-	)
-	return &app.VegasServiceImpl{}
+func InitializeVegasImplService() (*app.VegasServiceImpl, error) {
+	wire.Build(ProviderSet)
+	return &app.VegasServiceImpl{}, nil
 }
+
+// wire_gen.go:
+
+func NewActivityRepo() repository.ActivityRepository {
+	return persistence.NewActivityRepository()
+}
+
+func NewRmbRepo() repository.RmbRepository {
+	return rpc.NewRmbRepository()
+}
+
+func NewDrawService(rmbRep repository.RmbRepository, actRep repository.ActivityRepository) *service.DrawService {
+	return service.NewDrawService(rmbRep, actRep)
+}
+
+func NewVegasServiceImpl(drawService *service.DrawService) *app.VegasServiceImpl {
+	return app.NewVegasServiceImpl(drawService)
+}
+
+var ProviderSet = wire.NewSet(
+	NewActivityRepo,
+	NewRmbRepo,
+	NewDrawService,
+	NewVegasServiceImpl,
+)

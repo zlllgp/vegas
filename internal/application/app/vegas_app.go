@@ -7,16 +7,16 @@ import (
 )
 
 type VegasServiceImpl struct {
-	service inf.DrawService
+	drawService inf.DrawService
 }
 
-func NewVegasServiceImpl(service inf.DrawService) *VegasServiceImpl {
-	return &VegasServiceImpl{service: service}
+func NewVegasServiceImpl(drawService inf.DrawService) *VegasServiceImpl {
+	return &VegasServiceImpl{drawService: drawService}
 }
 
 // Draw implements the VegasServiceImpl interface.
 func (s *VegasServiceImpl) Draw(ctx context.Context, req *api.DrawRequest) (resp *api.DrawResponse, err error) {
-	drawResult, err := s.service.Draw(ctx, req.User.UserId, req.Eh)
+	drawResult, err := s.drawService.Draw(ctx, req.User.UserId, req.Eh)
 	if err != nil {
 		resp = &api.DrawResponse{
 			Rights: drawResult.Rights,
