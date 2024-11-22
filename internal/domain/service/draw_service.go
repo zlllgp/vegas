@@ -5,26 +5,25 @@ import (
 	"errors"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/zlllgp/vegas/internal/domain/entity"
-	"github.com/zlllgp/vegas/internal/infrastructure/persistence"
-	"github.com/zlllgp/vegas/internal/infrastructure/rpc"
+	"github.com/zlllgp/vegas/internal/domain/repository"
 	"github.com/zlllgp/vegas/kitex_gen/api"
 	"strconv"
 	"time"
 )
 
 type DrawService struct {
-	rmbRep *rpc.RmbRepository
-	actRep *persistence.ActivityRepository
+	rmbRep repository.RmbRepository
+	actRep repository.ActivityRepository
 }
 
-func NewDrawService(rmbRep *rpc.RmbRepository, actRep *persistence.ActivityRepository) *DrawService {
+func NewDrawService(rmbRep repository.RmbRepository, actRep repository.ActivityRepository) *DrawService {
 	return &DrawService{
 		rmbRep: rmbRep,
 		actRep: actRep,
 	}
 }
 
-func (s *DrawService) Draw(ctx context.Context, user *api.User, eh string) (*entity.DrawResult, error) {
+func (s *DrawService) Draw(ctx context.Context, userId int64, eh string) (*entity.DrawResult, error) {
 	//decode eh to activityId , planId
 	activityId, err := strconv.ParseInt(eh, 10, 64)
 	planId, err := strconv.ParseInt(eh, 10, 64)
@@ -33,7 +32,7 @@ func (s *DrawService) Draw(ctx context.Context, user *api.User, eh string) (*ent
 	}
 
 	// judge safe
-	safe := s.rmbRep.IsSafe(ctx, user.UserId)
+	safe := s.rmbRep.IsSafe(ctx, userId)
 	if !safe {
 		return nil, errors.New("not safe")
 	}
