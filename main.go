@@ -9,14 +9,12 @@ import (
 	etcd "github.com/kitex-contrib/registry-etcd"
 	"github.com/zlllgp/vegas/internal/application/app"
 	"github.com/zlllgp/vegas/internal/application/config"
-	"github.com/zlllgp/vegas/internal/domain/service"
 	"github.com/zlllgp/vegas/internal/infrastructure/consts"
 	"github.com/zlllgp/vegas/internal/infrastructure/dal"
 	"github.com/zlllgp/vegas/internal/infrastructure/mw"
-	"github.com/zlllgp/vegas/internal/infrastructure/persistence"
 	"github.com/zlllgp/vegas/internal/infrastructure/redis"
-	"github.com/zlllgp/vegas/internal/infrastructure/rpc"
 	"github.com/zlllgp/vegas/internal/infrastructure/viper"
+	"github.com/zlllgp/vegas/internal/wire"
 	"github.com/zlllgp/vegas/kitex_gen/api/rightservice"
 	"github.com/zlllgp/vegas/kitex_gen/api/vegasservice"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -29,10 +27,15 @@ func main() {
 
 	svr := server.NewServer(opts...)
 	// construct
-	rmbRep := rpc.NewRmbRepository()
-	actRep := persistence.NewActivityRepository()
-	drawService := service.NewDrawService(rmbRep, actRep)
-	vegasImpl := app.NewVegasServiceImpl(drawService)
+	/*	rmbRep := rpc.NewRmbRepository()
+		actRep := persistence.NewActivityRepository()
+		drawService := service.NewDrawService(rmbRep, actRep)
+		vegasImpl := app.NewVegasServiceImpl(drawService)*/
+
+	// use wire
+
+	vegasImpl := wire.InitializeVegasServiceImpl()
+
 	vegasservice.RegisterService(svr, vegasImpl)
 
 	rightImpl := app.NewRightServiceImpl()
