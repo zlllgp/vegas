@@ -1,6 +1,8 @@
-kitex:
-	@rm -rf kitex_gen/
-	@kitex -module github.com/zlllgp/vegas -service vegas ./idl/vegas.proto
+gen:
+	rm -rf kitex_gen/
+	kitex -module github.com/zlllgp/vegas ./api/base.proto
+	kitex -service vegas -module github.com/zlllgp/vegas -I ./api ./api/vegas.proto
+	kitex -service right -module github.com/zlllgp/vegas -I ./api ./api/right.proto
 
 # 定义变量
 IMAGE_NAME = vegas

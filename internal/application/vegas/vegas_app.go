@@ -1,0 +1,55 @@
+package vegas
+
+import (
+	"context"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/zlllgp/vegas/internal/infrastructure/dal/wk/query"
+	"github.com/zlllgp/vegas/kitex_gen/api"
+)
+
+type VegasServiceImpl struct {
+	//ctx context.Context
+}
+
+//func NewVegasServiceImpl(ctx context.Context) *VegasServiceImpl {
+//	return &VegasServiceImpl{ctx: ctx}
+//}
+
+// Draw implements the VegasServiceImpl interface.
+func (s *VegasServiceImpl) Draw(ctx context.Context, req *api.DrawRequest) (resp *api.DrawResponse, err error) {
+	u := query.Q.Activity
+	// create
+	/*activityCrate := model.Activity{CreatorId: 1, CreatorName: "test002", Name: "测试活动3", TenantId: 1}
+	err = u.Create(&activityCrate)
+	if err != nil {
+		return nil, err
+	}*/
+
+	// transaction todo fix
+	/*q := query.Use(db)
+	activityTx := model.Activity{CreatorId: 1, CreatorName: "test002", Name: "测试活动4", TenantId: 1}
+	err = q.Transaction(func(tx *query.Query) error {
+		tx.Activity.Create(&activityTx)
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}*/
+
+	// redis
+
+	// query
+	activityResult, _ := u.Select(u.ALL).Where(u.ID.In(1)).First()
+	klog.Infof("query activity : %+v", activityResult)
+	klog.Infof("eh : %s , userName : %s", req.Eh, req.User.UserName)
+
+	right := &api.Right{Id: 1, Num: 1, Amt: "10"}
+	resp = &api.DrawResponse{Code: "SUCCESS", Msg: "", Rights: []*api.Right{right}}
+	return resp, nil
+}
+
+// Show implements the VegasServiceImpl interface.
+func (s *VegasServiceImpl) Show(ctx context.Context, req *api.ShowRequest) (resp *api.ShowResponse, err error) {
+	// TODO: Your code here...
+	return
+}

@@ -1,0 +1,17 @@
+syntax = "proto3";
+package api;
+option go_package = "api";
+import "base.proto";
+
+message RightRequest {
+  User user = 1;
+  string eh = 2;
+}
+
+message RightResponse {
+  repeated Right rights = 3;
+}
+
+service RightService{
+  rpc QueryRight(RightRequest) returns (RightResponse);
+}

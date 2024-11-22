@@ -1,0 +1,28 @@
+syntax = "proto3";
+package api;
+option go_package = "api";
+import "base.proto";
+
+message DrawRequest {
+  User user = 1;
+  string eh = 2;
+}
+message DrawResponse {
+  string code = 1;
+  string msg = 2;
+  repeated Right rights = 3;
+}
+message ShowRequest {
+  User user = 1;
+  string eh = 2;
+}
+
+message ShowResponse {
+  string code = 1;
+  string msg = 2;
+}
+
+service VegasService{
+  rpc Draw(DrawRequest) returns (DrawResponse);
+  rpc Show(ShowRequest) returns (ShowResponse);
+}

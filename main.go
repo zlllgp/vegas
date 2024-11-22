@@ -7,10 +7,12 @@ import (
 	"github.com/cloudwego/kitex/server"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	"github.com/zlllgp/vegas/internal/config"
-	"github.com/zlllgp/vegas/internal/dal"
-	"github.com/zlllgp/vegas/internal/redis"
-	"github.com/zlllgp/vegas/kitex_gen/api/vegas"
+	"github.com/zlllgp/vegas/internal/application/config"
+	"github.com/zlllgp/vegas/internal/application/vegas"
+	"github.com/zlllgp/vegas/internal/infrastructure/dal"
+	"github.com/zlllgp/vegas/internal/infrastructure/redis"
+	"github.com/zlllgp/vegas/internal/infrastructure/viper"
+	"github.com/zlllgp/vegas/kitex_gen/api/vegasservice"
 	"github.com/zlllgp/vegas/pkg/consts"
 	"github.com/zlllgp/vegas/pkg/mw"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -23,9 +25,9 @@ func main() {
 	// server
 	svr := server.NewServer(opts...)
 	//实例服务
-	vegasImpl := &VegasImpl{}
+	vegasImpl := &vegas.VegasServiceImpl{}
 	//注册服务
-	vegas.RegisterService(svr, vegasImpl)
+	vegasservice.RegisterService(svr, vegasImpl)
 
 	err := svr.Run()
 	if err != nil {
@@ -34,12 +36,25 @@ func main() {
 }
 
 func kitexInit() (opts []server.Option) {
+	// config
+	viper.Init()
+
+	// log
+	logger := kitexlogrus.NewLogger()
+	klog.SetLogger(logger)
+	klog.SetLevel(viper.LogLevel())
+	klog.SetOutput(&lumberjack.Logger{
+		Filename:   config.GlobalConfig.Kitex.LogFileName,
+		MaxSize:    config.GlobalConfig.Kitex.LogMaxSize,
+		MaxBackups: config.GlobalConfig.Kitex.LogMaxBackups,
+		MaxAge:     config.GlobalConfig.Kitex.LogMaxAge,
+	})
+
+	// address
 	ip, err := consts.GetOutBoundIP()
 	if err != nil {
 		panic(err)
 	}
-
-	// address
 	addr, err := net.ResolveTCPAddr("tcp", ip+":8080")
 	if err != nil {
 		panic(err)
@@ -48,7 +63,7 @@ func kitexInit() (opts []server.Option) {
 
 	// service info
 	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
-		ServiceName: config.GetConf().Kitex.Service,
+		ServiceName: config.GlobalConfig.Kitex.Service,
 	}))
 
 	// registry
@@ -58,7 +73,7 @@ func kitexInit() (opts []server.Option) {
 	//}
 
 	//etcd
-	r, err := etcd.NewEtcdRegistry([]string{config.GetConf().Etcd.Address})
+	r, err := etcd.NewEtcdRegistry([]string{config.GlobalConfig.Etcd.Address})
 	if err != nil {
 		panic(err)
 	}
@@ -72,17 +87,6 @@ func kitexInit() (opts []server.Option) {
 
 	//limit
 	opts = append(opts, server.WithLimit(&limit.Option{MaxConnections: 10000, MaxQPS: 10000}))
-
-	// klog
-	logger := kitexlogrus.NewLogger()
-	klog.SetLogger(logger)
-	klog.SetLevel(config.LogLevel())
-	klog.SetOutput(&lumberjack.Logger{
-		Filename:   config.GetConf().Kitex.LogFileName,
-		MaxSize:    config.GetConf().Kitex.LogMaxSize,
-		MaxBackups: config.GetConf().Kitex.LogMaxBackups,
-		MaxAge:     config.GetConf().Kitex.LogMaxAge,
-	})
 
 	// init other
 	dal.InitWkDB()

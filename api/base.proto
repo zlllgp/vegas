@@ -1,0 +1,18 @@
+syntax = "proto3";
+package api;
+option go_package = "api";
+
+message User {
+  int64 userId = 1;
+  string userName = 2;
+  string ua = 3;
+  string idfa = 4;
+  string imei = 5;
+  string eh = 6;
+}
+
+message Right{
+  int64 id = 1;
+  int64 num = 2;
+  string amt = 3;
+}

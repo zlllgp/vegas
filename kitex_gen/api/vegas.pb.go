@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.28.1
 // 	protoc        v5.26.1
-// source: idl/vegas.proto
+// source: vegas.proto
 
 package api
 
@@ -26,18 +26,14 @@ type DrawRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserId   int64  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
-	UserName string `protobuf:"bytes,2,opt,name=userName,proto3" json:"userName,omitempty"`
-	Ua       string `protobuf:"bytes,3,opt,name=ua,proto3" json:"ua,omitempty"`
-	Idfa     string `protobuf:"bytes,4,opt,name=idfa,proto3" json:"idfa,omitempty"`
-	Imei     string `protobuf:"bytes,5,opt,name=imei,proto3" json:"imei,omitempty"`
-	Eh       string `protobuf:"bytes,6,opt,name=eh,proto3" json:"eh,omitempty"`
+	User *User  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	Eh   string `protobuf:"bytes,2,opt,name=eh,proto3" json:"eh,omitempty"`
 }
 
 func (x *DrawRequest) Reset() {
 	*x = DrawRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_idl_vegas_proto_msgTypes[0]
+		mi := &file_vegas_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -50,7 +46,7 @@ func (x *DrawRequest) String() string {
 func (*DrawRequest) ProtoMessage() {}
 
 func (x *DrawRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_idl_vegas_proto_msgTypes[0]
+	mi := &file_vegas_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -63,42 +59,14 @@ func (x *DrawRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DrawRequest.ProtoReflect.Descriptor instead.
 func (*DrawRequest) Descriptor() ([]byte, []int) {
-	return file_idl_vegas_proto_rawDescGZIP(), []int{0}
+	return file_vegas_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DrawRequest) GetUserId() int64 {
+func (x *DrawRequest) GetUser() *User {
 	if x != nil {
-		return x.UserId
+		return x.User
 	}
-	return 0
-}
-
-func (x *DrawRequest) GetUserName() string {
-	if x != nil {
-		return x.UserName
-	}
-	return ""
-}
-
-func (x *DrawRequest) GetUa() string {
-	if x != nil {
-		return x.Ua
-	}
-	return ""
-}
-
-func (x *DrawRequest) GetIdfa() string {
-	if x != nil {
-		return x.Idfa
-	}
-	return ""
-}
-
-func (x *DrawRequest) GetImei() string {
-	if x != nil {
-		return x.Imei
-	}
-	return ""
+	return nil
 }
 
 func (x *DrawRequest) GetEh() string {
@@ -108,33 +76,33 @@ func (x *DrawRequest) GetEh() string {
 	return ""
 }
 
-type DrawResult struct {
+type DrawResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Code   string     `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
-	Msg    string     `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
-	Rights *RightsDTO `protobuf:"bytes,3,opt,name=rights,proto3" json:"rights,omitempty"`
+	Code   string   `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg    string   `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Rights []*Right `protobuf:"bytes,3,rep,name=rights,proto3" json:"rights,omitempty"`
 }
 
-func (x *DrawResult) Reset() {
-	*x = DrawResult{}
+func (x *DrawResponse) Reset() {
+	*x = DrawResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_idl_vegas_proto_msgTypes[1]
+		mi := &file_vegas_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
 }
 
-func (x *DrawResult) String() string {
+func (x *DrawResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DrawResult) ProtoMessage() {}
+func (*DrawResponse) ProtoMessage() {}
 
-func (x *DrawResult) ProtoReflect() protoreflect.Message {
-	mi := &file_idl_vegas_proto_msgTypes[1]
+func (x *DrawResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_vegas_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -145,59 +113,58 @@ func (x *DrawResult) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DrawResult.ProtoReflect.Descriptor instead.
-func (*DrawResult) Descriptor() ([]byte, []int) {
-	return file_idl_vegas_proto_rawDescGZIP(), []int{1}
+// Deprecated: Use DrawResponse.ProtoReflect.Descriptor instead.
+func (*DrawResponse) Descriptor() ([]byte, []int) {
+	return file_vegas_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *DrawResult) GetCode() string {
+func (x *DrawResponse) GetCode() string {
 	if x != nil {
 		return x.Code
 	}
 	return ""
 }
 
-func (x *DrawResult) GetMsg() string {
+func (x *DrawResponse) GetMsg() string {
 	if x != nil {
 		return x.Msg
 	}
 	return ""
 }
 
-func (x *DrawResult) GetRights() *RightsDTO {
+func (x *DrawResponse) GetRights() []*Right {
 	if x != nil {
 		return x.Rights
 	}
 	return nil
 }
 
-type RightsDTO struct {
+type ShowRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id  int64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Num int64  `protobuf:"varint,2,opt,name=num,proto3" json:"num,omitempty"`
-	Amt string `protobuf:"bytes,3,opt,name=amt,proto3" json:"amt,omitempty"`
+	User *User  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	Eh   string `protobuf:"bytes,2,opt,name=eh,proto3" json:"eh,omitempty"`
 }
 
-func (x *RightsDTO) Reset() {
-	*x = RightsDTO{}
+func (x *ShowRequest) Reset() {
+	*x = ShowRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_idl_vegas_proto_msgTypes[2]
+		mi := &file_vegas_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
 }
 
-func (x *RightsDTO) String() string {
+func (x *ShowRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RightsDTO) ProtoMessage() {}
+func (*ShowRequest) ProtoMessage() {}
 
-func (x *RightsDTO) ProtoReflect() protoreflect.Message {
-	mi := &file_idl_vegas_proto_msgTypes[2]
+func (x *ShowRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_vegas_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -208,100 +175,158 @@ func (x *RightsDTO) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RightsDTO.ProtoReflect.Descriptor instead.
-func (*RightsDTO) Descriptor() ([]byte, []int) {
-	return file_idl_vegas_proto_rawDescGZIP(), []int{2}
+// Deprecated: Use ShowRequest.ProtoReflect.Descriptor instead.
+func (*ShowRequest) Descriptor() ([]byte, []int) {
+	return file_vegas_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *RightsDTO) GetId() int64 {
+func (x *ShowRequest) GetUser() *User {
 	if x != nil {
-		return x.Id
+		return x.User
 	}
-	return 0
+	return nil
 }
 
-func (x *RightsDTO) GetNum() int64 {
+func (x *ShowRequest) GetEh() string {
 	if x != nil {
-		return x.Num
-	}
-	return 0
-}
-
-func (x *RightsDTO) GetAmt() string {
-	if x != nil {
-		return x.Amt
+		return x.Eh
 	}
 	return ""
 }
 
-var File_idl_vegas_proto protoreflect.FileDescriptor
+type ShowResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
 
-var file_idl_vegas_proto_rawDesc = []byte{
-	0x0a, 0x0f, 0x69, 0x64, 0x6c, 0x2f, 0x76, 0x65, 0x67, 0x61, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x12, 0x03, 0x61, 0x70, 0x69, 0x22, 0x89, 0x01, 0x0a, 0x0b, 0x44, 0x72, 0x61, 0x77, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x1a,
-	0x0a, 0x08, 0x75, 0x73, 0x65, 0x72, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x08, 0x75, 0x73, 0x65, 0x72, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x75, 0x61,
-	0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x75, 0x61, 0x12, 0x12, 0x0a, 0x04, 0x69, 0x64,
-	0x66, 0x61, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x69, 0x64, 0x66, 0x61, 0x12, 0x12,
-	0x0a, 0x04, 0x69, 0x6d, 0x65, 0x69, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x69, 0x6d,
-	0x65, 0x69, 0x12, 0x0e, 0x0a, 0x02, 0x65, 0x68, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02,
-	0x65, 0x68, 0x22, 0x5a, 0x0a, 0x0a, 0x44, 0x72, 0x61, 0x77, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74,
-	0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
-	0x63, 0x6f, 0x64, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x03, 0x6d, 0x73, 0x67, 0x12, 0x26, 0x0a, 0x06, 0x72, 0x69, 0x67, 0x68, 0x74, 0x73,
-	0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x52, 0x69, 0x67,
-	0x68, 0x74, 0x73, 0x44, 0x54, 0x4f, 0x52, 0x06, 0x72, 0x69, 0x67, 0x68, 0x74, 0x73, 0x22, 0x3f,
-	0x0a, 0x09, 0x52, 0x69, 0x67, 0x68, 0x74, 0x73, 0x44, 0x54, 0x4f, 0x12, 0x0e, 0x0a, 0x02, 0x69,
-	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69, 0x64, 0x12, 0x10, 0x0a, 0x03, 0x6e,
-	0x75, 0x6d, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x03, 0x6e, 0x75, 0x6d, 0x12, 0x10, 0x0a,
-	0x03, 0x61, 0x6d, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x61, 0x6d, 0x74, 0x32,
-	0x32, 0x0a, 0x05, 0x56, 0x65, 0x67, 0x61, 0x73, 0x12, 0x29, 0x0a, 0x04, 0x44, 0x72, 0x61, 0x77,
-	0x12, 0x10, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x1a, 0x0f, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x52, 0x65, 0x73,
-	0x75, 0x6c, 0x74, 0x42, 0x27, 0x5a, 0x25, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
-	0x6d, 0x2f, 0x7a, 0x6c, 0x6c, 0x6c, 0x67, 0x70, 0x2f, 0x76, 0x65, 0x67, 0x61, 0x73, 0x2f, 0x6b,
-	0x69, 0x74, 0x65, 0x78, 0x5f, 0x67, 0x65, 0x6e, 0x2f, 0x61, 0x70, 0x69, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	Code string `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg  string `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+}
+
+func (x *ShowResponse) Reset() {
+	*x = ShowResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_vegas_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ShowResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ShowResponse) ProtoMessage() {}
+
+func (x *ShowResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_vegas_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ShowResponse.ProtoReflect.Descriptor instead.
+func (*ShowResponse) Descriptor() ([]byte, []int) {
+	return file_vegas_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ShowResponse) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *ShowResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+var File_vegas_proto protoreflect.FileDescriptor
+
+var file_vegas_proto_rawDesc = []byte{
+	0x0a, 0x0b, 0x76, 0x65, 0x67, 0x61, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x03, 0x61,
+	0x70, 0x69, 0x1a, 0x0a, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x3c,
+	0x0a, 0x0b, 0x44, 0x72, 0x61, 0x77, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a,
+	0x04, 0x75, 0x73, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x09, 0x2e, 0x61, 0x70,
+	0x69, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x04, 0x75, 0x73, 0x65, 0x72, 0x12, 0x0e, 0x0a, 0x02,
+	0x65, 0x68, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x65, 0x68, 0x22, 0x58, 0x0a, 0x0c,
+	0x44, 0x72, 0x61, 0x77, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x12, 0x0a, 0x04,
+	0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65,
+	0x12, 0x10, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6d,
+	0x73, 0x67, 0x12, 0x22, 0x0a, 0x06, 0x72, 0x69, 0x67, 0x68, 0x74, 0x73, 0x18, 0x03, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x52, 0x69, 0x67, 0x68, 0x74, 0x52, 0x06,
+	0x72, 0x69, 0x67, 0x68, 0x74, 0x73, 0x22, 0x3c, 0x0a, 0x0b, 0x53, 0x68, 0x6f, 0x77, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x04, 0x75, 0x73, 0x65, 0x72, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x09, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x04,
+	0x75, 0x73, 0x65, 0x72, 0x12, 0x0e, 0x0a, 0x02, 0x65, 0x68, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x02, 0x65, 0x68, 0x22, 0x34, 0x0a, 0x0c, 0x53, 0x68, 0x6f, 0x77, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6d, 0x73, 0x67, 0x32, 0x68, 0x0a, 0x0c, 0x56, 0x65,
+	0x67, 0x61, 0x73, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x2b, 0x0a, 0x04, 0x44, 0x72,
+	0x61, 0x77, 0x12, 0x10, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x11, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2b, 0x0a, 0x04, 0x53, 0x68, 0x6f, 0x77, 0x12,
+	0x10, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x68, 0x6f, 0x77, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x11, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x68, 0x6f, 0x77, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x42, 0x27, 0x5a, 0x25, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
+	0x6f, 0x6d, 0x2f, 0x7a, 0x6c, 0x6c, 0x6c, 0x67, 0x70, 0x2f, 0x76, 0x65, 0x67, 0x61, 0x73, 0x2f,
+	0x6b, 0x69, 0x74, 0x65, 0x78, 0x5f, 0x67, 0x65, 0x6e, 0x2f, 0x61, 0x70, 0x69, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_idl_vegas_proto_rawDescOnce sync.Once
-	file_idl_vegas_proto_rawDescData = file_idl_vegas_proto_rawDesc
+	file_vegas_proto_rawDescOnce sync.Once
+	file_vegas_proto_rawDescData = file_vegas_proto_rawDesc
 )
 
-func file_idl_vegas_proto_rawDescGZIP() []byte {
-	file_idl_vegas_proto_rawDescOnce.Do(func() {
-		file_idl_vegas_proto_rawDescData = protoimpl.X.CompressGZIP(file_idl_vegas_proto_rawDescData)
+func file_vegas_proto_rawDescGZIP() []byte {
+	file_vegas_proto_rawDescOnce.Do(func() {
+		file_vegas_proto_rawDescData = protoimpl.X.CompressGZIP(file_vegas_proto_rawDescData)
 	})
-	return file_idl_vegas_proto_rawDescData
+	return file_vegas_proto_rawDescData
 }
 
-var file_idl_vegas_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_idl_vegas_proto_goTypes = []interface{}{
-	(*DrawRequest)(nil), // 0: api.DrawRequest
-	(*DrawResult)(nil),  // 1: api.DrawResult
-	(*RightsDTO)(nil),   // 2: api.RightsDTO
+var file_vegas_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_vegas_proto_goTypes = []interface{}{
+	(*DrawRequest)(nil),  // 0: api.DrawRequest
+	(*DrawResponse)(nil), // 1: api.DrawResponse
+	(*ShowRequest)(nil),  // 2: api.ShowRequest
+	(*ShowResponse)(nil), // 3: api.ShowResponse
+	(*User)(nil),         // 4: api.User
+	(*Right)(nil),        // 5: api.Right
 }
-var file_idl_vegas_proto_depIdxs = []int32{
-	2, // 0: api.DrawResult.rights:type_name -> api.RightsDTO
-	0, // 1: api.Vegas.Draw:input_type -> api.DrawRequest
-	1, // 2: api.Vegas.Draw:output_type -> api.DrawResult
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+var file_vegas_proto_depIdxs = []int32{
+	4, // 0: api.DrawRequest.user:type_name -> api.User
+	5, // 1: api.DrawResponse.rights:type_name -> api.Right
+	4, // 2: api.ShowRequest.user:type_name -> api.User
+	0, // 3: api.VegasService.Draw:input_type -> api.DrawRequest
+	2, // 4: api.VegasService.Show:input_type -> api.ShowRequest
+	1, // 5: api.VegasService.Draw:output_type -> api.DrawResponse
+	3, // 6: api.VegasService.Show:output_type -> api.ShowResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
-func init() { file_idl_vegas_proto_init() }
-func file_idl_vegas_proto_init() {
-	if File_idl_vegas_proto != nil {
+func init() { file_vegas_proto_init() }
+func file_vegas_proto_init() {
+	if File_vegas_proto != nil {
 		return
 	}
+	file_base_proto_init()
 	if !protoimpl.UnsafeEnabled {
-		file_idl_vegas_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_vegas_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DrawRequest); i {
 			case 0:
 				return &v.state
@@ -313,8 +338,8 @@ func file_idl_vegas_proto_init() {
 				return nil
 			}
 		}
-		file_idl_vegas_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DrawResult); i {
+		file_vegas_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DrawResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -325,8 +350,20 @@ func file_idl_vegas_proto_init() {
 				return nil
 			}
 		}
-		file_idl_vegas_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RightsDTO); i {
+		file_vegas_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ShowRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_vegas_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ShowResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -342,26 +379,27 @@ func file_idl_vegas_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_idl_vegas_proto_rawDesc,
+			RawDescriptor: file_vegas_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_idl_vegas_proto_goTypes,
-		DependencyIndexes: file_idl_vegas_proto_depIdxs,
-		MessageInfos:      file_idl_vegas_proto_msgTypes,
+		GoTypes:           file_vegas_proto_goTypes,
+		DependencyIndexes: file_vegas_proto_depIdxs,
+		MessageInfos:      file_vegas_proto_msgTypes,
 	}.Build()
-	File_idl_vegas_proto = out.File
-	file_idl_vegas_proto_rawDesc = nil
-	file_idl_vegas_proto_goTypes = nil
-	file_idl_vegas_proto_depIdxs = nil
+	File_vegas_proto = out.File
+	file_vegas_proto_rawDesc = nil
+	file_vegas_proto_goTypes = nil
+	file_vegas_proto_depIdxs = nil
 }
 
 var _ context.Context
 
 // Code generated by Kitex v0.10.1. DO NOT EDIT.
 
-type Vegas interface {
-	Draw(ctx context.Context, req *DrawRequest) (res *DrawResult, err error)
+type VegasService interface {
+	Draw(ctx context.Context, req *DrawRequest) (res *DrawResponse, err error)
+	Show(ctx context.Context, req *ShowRequest) (res *ShowResponse, err error)
 }
