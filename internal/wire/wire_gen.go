@@ -15,6 +15,12 @@ import (
 	"github.com/zlllgp/vegas/internal/infrastructure/rpc"
 )
 
+// do wire before use this code then auto generate down code
+/*func InitializeVegasImplService() (*app.VegasServiceImpl, error) {
+	wire.Build(ProviderSet)
+	return &app.VegasServiceImpl{}, nil
+}*/
+
 // Injectors from wire_gen.go:
 
 func InitializeVegasImplService() (*app.VegasServiceImpl, error) {

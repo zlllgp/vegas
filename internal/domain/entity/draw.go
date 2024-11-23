@@ -10,3 +10,9 @@ type DrawResult struct {
 	Time   time.Time
 	Err    error
 }
+
+type ShowResult struct {
+	Rights []*api.Right
+	Time   time.Time
+	Err    error
+}
