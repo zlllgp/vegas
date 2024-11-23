@@ -19,13 +19,17 @@ func (s *VegasServiceImpl) Draw(ctx context.Context, req *api.DrawRequest) (resp
 	drawResult, err := s.drawService.Draw(ctx, req.User.UserId, req.Eh)
 	if err != nil {
 		resp = &api.DrawResponse{
-			Rights: drawResult.Rights,
-			Code:   "SUCCESS",
-			Msg:    "WIN",
+			Rights: nil,
+			Code:   "FAIL",
+			Msg:    "Exception",
 		}
 		return resp, nil
 	}
-	return nil, err
+	return &api.DrawResponse{
+		Rights: drawResult.Rights,
+		Code:   "SUCCESS",
+		Msg:    "WIN",
+	}, err
 }
 
 // Show implements the VegasServiceImpl interface.

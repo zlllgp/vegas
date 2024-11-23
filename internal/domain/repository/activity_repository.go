@@ -7,4 +7,5 @@ import (
 
 type ActivityRepository interface {
 	GetById(ctx context.Context, id int64) (*model.Activity, error)
+	CreateActivity(ctx context.Context, name string) error
 }

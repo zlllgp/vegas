@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"context"
+	"github.com/zlllgp/vegas/internal/domain/entity"
 	"github.com/zlllgp/vegas/internal/infrastructure/dal/wk/model"
 	"github.com/zlllgp/vegas/internal/infrastructure/dal/wk/query"
 	"gorm.io/gen"
@@ -24,4 +25,10 @@ func (r *ActivityRepository) getFirst(ctx context.Context, conditions ...gen.Con
 
 func (r *ActivityRepository) GetById(ctx context.Context, id int64) (*model.Activity, error) {
 	return r.getFirst(ctx, query.Q.Activity.ID.Eq(id))
+}
+
+func (r *ActivityRepository) CreateActivity(ctx context.Context, name string) error {
+	activity := entity.NewActivity(
+		entity.WithName(name))
+	return query.Q.WithContext(ctx).Activity.Create(activity.ToModel())
 }

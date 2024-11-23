@@ -8,6 +8,14 @@ type Activity struct {
 	TenantID int32
 }
 
+func NewActivity(options ...ActivityOption) *Activity {
+	activity := &Activity{}
+	for _, option := range options {
+		option(activity)
+	}
+	return activity
+}
+
 func (a *Activity) ToModel() *model.Activity {
 	return &model.Activity{
 		ID:   a.ID,
