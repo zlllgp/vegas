@@ -11,7 +11,6 @@ import (
 	"github.com/zlllgp/vegas/internal/application/config"
 	"github.com/zlllgp/vegas/internal/infrastructure/consts"
 	"github.com/zlllgp/vegas/internal/infrastructure/dal"
-	"github.com/zlllgp/vegas/internal/infrastructure/mw"
 	"github.com/zlllgp/vegas/internal/infrastructure/redis"
 	"github.com/zlllgp/vegas/internal/infrastructure/viper"
 	"github.com/zlllgp/vegas/internal/wire"
@@ -84,7 +83,7 @@ func kitexInit() (opts []server.Option) {
 	opts = append(opts, server.WithRegistry(r))
 
 	//middleware
-	opts = append(opts, server.WithMiddleware(mw.CommonMiddleware), server.WithMiddleware(mw.ServerMiddleware))
+	//opts = append(opts, server.WithMiddleware(mw.CommonMiddleware), server.WithMiddleware(mw.ServerMiddleware))
 
 	//timeout
 	opts = append(opts, server.WithReadWriteTimeout(3*time.Second))
