@@ -6,10 +6,13 @@ import "base.proto";
 message RightRequest {
   User user = 1;
   string eh = 2;
+  PaginationRequest page_req = 3;
+  repeated SearchField sfs = 4;
 }
 
 message RightResponse {
-  repeated Right rights = 3;
+  PaginationResponse page_resp = 1;
+  repeated Right rights = 2;
 }
 
 service RightService{

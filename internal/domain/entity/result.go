@@ -16,3 +16,7 @@ type ShowResult struct {
 	Time   time.Time
 	Err    error
 }
+
+type RightResult struct {
+	Rights []*api.Right
+}

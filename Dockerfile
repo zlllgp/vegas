@@ -3,7 +3,7 @@
 #
 FROM docker.unsee.tech/golang:1.23.3-alpine3.20 AS build
 RUN apk add --no-cache git
-WORKDIR /code
+WORKDIR /build
 COPY . .
 RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go env -w GO111MODULE=on
@@ -20,9 +20,9 @@ ENV USER=admin \
 ENV APP_HOME=/home/$USER
 RUN mkdir -p $APP_HOME/bin $APP_HOME/log
 #RUN chown -R $USER:$GROUP $APP_HOME && chmod -R 755 $APP_HOME
-COPY --from=build /code/conf $APP_HOME/conf
-COPY --from=build /code/output/bin/vegas $APP_HOME/bin/vegas
-COPY --from=build /code/output/bootstrap.sh $APP_HOME/bootstrap.sh
+COPY --from=build /build/conf $APP_HOME/conf
+COPY --from=build /build/output/bin/vegas $APP_HOME/bin/vegas
+COPY --from=build /build/output/bootstrap.sh $APP_HOME/bootstrap.sh
 RUN chmod -R 755 $APP_HOME
 WORKDIR $APP_HOME
 EXPOSE 8080

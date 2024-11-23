@@ -21,3 +21,9 @@ go mod edit -replace=github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 docker export xxx > docker.tar
 进入容器
 docker exec -it 4e*** sh
+
+# gomock
+https://blog.csdn.net/xidianhuihui/article/details/131128948
+go install github.com/golang/mock/mockgen@latest
+go get github.com/golang/mock/mock
+go get github.com/golang/mock/mockgen

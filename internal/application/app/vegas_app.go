@@ -16,6 +16,7 @@ func NewVegasServiceImpl(drawService inf.DrawService) *VegasServiceImpl {
 
 // Draw implements the VegasServiceImpl interface.
 func (s *VegasServiceImpl) Draw(ctx context.Context, req *api.DrawRequest) (resp *api.DrawResponse, err error) {
+	//biz logic in domain service , but use inf
 	drawResult, err := s.drawService.Draw(ctx, req.User.UserId, req.Eh)
 	if err != nil {
 		resp = &api.DrawResponse{

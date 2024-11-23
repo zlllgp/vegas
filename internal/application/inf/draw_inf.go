@@ -6,6 +6,7 @@ import (
 	"github.com/zlllgp/vegas/internal/domain/service"
 )
 
+//go:generate mockgen -source=draw_inf.go -destination=draw_inf_mock.go -package=inf DrawService
 type DrawService interface {
 	Draw(ctx context.Context, userId int64, eh string) (*entity.DrawResult, error)
 }

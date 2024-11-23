@@ -125,27 +125,6 @@ type QueryRightArgs struct {
 	Req *api.RightRequest
 }
 
-func (p *QueryRightArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(api.RightRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *QueryRightArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *QueryRightArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *QueryRightArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, nil
@@ -184,27 +163,6 @@ type QueryRightResult struct {
 }
 
 var QueryRightResult_Success_DEFAULT *api.RightResponse
-
-func (p *QueryRightResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(api.RightResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *QueryRightResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *QueryRightResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *QueryRightResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {

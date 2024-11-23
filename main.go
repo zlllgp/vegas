@@ -7,11 +7,10 @@ import (
 	"github.com/cloudwego/kitex/server"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	"github.com/zlllgp/vegas/internal/application/app"
 	"github.com/zlllgp/vegas/internal/application/config"
-	"github.com/zlllgp/vegas/internal/infrastructure/consts"
 	"github.com/zlllgp/vegas/internal/infrastructure/dal"
 	"github.com/zlllgp/vegas/internal/infrastructure/redis"
+	"github.com/zlllgp/vegas/internal/infrastructure/utils"
 	"github.com/zlllgp/vegas/internal/infrastructure/viper"
 	"github.com/zlllgp/vegas/internal/wire"
 	"github.com/zlllgp/vegas/kitex_gen/api/rightservice"
@@ -35,7 +34,7 @@ func main() {
 	vegasImpl, _ := wire.InitializeVegasImplService()
 	vegasservice.RegisterService(svr, vegasImpl)
 
-	rightImpl := app.NewRightServiceImpl()
+	rightImpl, _ := wire.InitializeRightImplService()
 	rightservice.RegisterService(svr, rightImpl)
 
 	err := svr.Run()
@@ -60,7 +59,7 @@ func kitexInit() (opts []server.Option) {
 	})
 
 	// address
-	ip, err := consts.GetOutBoundIP()
+	ip, err := utils.GetOutBoundIP()
 	if err != nil {
 		panic(err)
 	}

@@ -132,27 +132,6 @@ type DrawArgs struct {
 	Req *api.DrawRequest
 }
 
-func (p *DrawArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(api.DrawRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *DrawArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *DrawArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *DrawArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, nil
@@ -191,27 +170,6 @@ type DrawResult struct {
 }
 
 var DrawResult_Success_DEFAULT *api.DrawResponse
-
-func (p *DrawResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(api.DrawResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *DrawResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *DrawResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *DrawResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -285,27 +243,6 @@ type ShowArgs struct {
 	Req *api.ShowRequest
 }
 
-func (p *ShowArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(api.ShowRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *ShowArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *ShowArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *ShowArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, nil
@@ -344,27 +281,6 @@ type ShowResult struct {
 }
 
 var ShowResult_Success_DEFAULT *api.ShowResponse
-
-func (p *ShowResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(api.ShowResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *ShowResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *ShowResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *ShowResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
