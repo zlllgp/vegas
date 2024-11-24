@@ -3,6 +3,7 @@ package wire
 import (
 	"github.com/google/wire"
 	"github.com/zlllgp/vegas/internal/application/app"
+	"github.com/zlllgp/vegas/internal/application/inf"
 	"github.com/zlllgp/vegas/internal/domain/repository"
 	"github.com/zlllgp/vegas/internal/domain/service"
 	"github.com/zlllgp/vegas/internal/infrastructure/persistence"
@@ -15,30 +16,30 @@ import (
 // step3 add function like this
 // step4 in wire dir do wire command , then modify main.go
 
-/*func InitializeVegasImplService() (*app.VegasServiceImpl, error) {
-	wire.Build(VegasProviderSet)
-	return &app.VegasServiceImpl{}, nil
-}*/
+/*
+	func InitVegasApp() *app.VegasServiceImpl {
+		wire.Build(VegasAppProviderSet)
+		return &app.VegasServiceImpl{}
+	}
+*/
+var ActivityRepoProvider = wire.NewSet(
+	persistence.NewActivityRepository,
+	wire.Bind(new(repository.ActivityRepository), new(*persistence.ActivityRepository)),
+)
 
-func NewActivityRepo() repository.ActivityRepository {
-	return persistence.NewActivityRepository()
-}
+var RmbRepoProvider = wire.NewSet(
+	rpc.NewRmbRepository,
+	wire.Bind(new(repository.RmbRepository), new(*rpc.RmbRepository)),
+)
 
-func NewRmbRepo() repository.RmbRepository {
-	return rpc.NewRmbRepository()
-}
+var DrawServiceProvider = wire.NewSet(
+	service.NewDrawService,
+	wire.Bind(new(inf.DrawService), new(*service.DrawService)),
+)
 
-func NewDrawService(rmbRep repository.RmbRepository, actRep repository.ActivityRepository) *service.DrawService {
-	return service.NewDrawService(rmbRep, actRep)
-}
-
-func NewVegasServiceImpl(drawService *service.DrawService) *app.VegasServiceImpl {
-	return app.NewVegasServiceImpl(drawService)
-}
-
-var VegasProviderSet = wire.NewSet(
-	NewActivityRepo,
-	NewRmbRepo,
-	NewDrawService,
-	NewVegasServiceImpl,
+var VegasAppProviderSet = wire.NewSet(
+	app.NewVegasServiceImpl,
+	ActivityRepoProvider,
+	RmbRepoProvider,
+	DrawServiceProvider,
 )

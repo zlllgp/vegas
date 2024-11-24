@@ -8,23 +8,24 @@ package wire
 
 import (
 	"github.com/zlllgp/vegas/internal/application/app"
+	"github.com/zlllgp/vegas/internal/domain/service"
+	"github.com/zlllgp/vegas/internal/infrastructure/persistence"
+	"github.com/zlllgp/vegas/internal/infrastructure/rpc"
 )
 
 // Injectors from wire_gen.go:
 
-func InitializeRightImplService() (*app.RightServiceImpl, error) {
-	rightRepository := NewRightRepo()
-	rightService := NewRightService(rightRepository)
-	rightServiceImpl := NewRightServiceImpl(rightService)
-	return rightServiceImpl, nil
+func InitVegasApp() *app.VegasServiceImpl {
+	rmbRepository := rpc.NewRmbRepository()
+	activityRepository := persistence.NewActivityRepository()
+	drawService := service.NewDrawService(rmbRepository, activityRepository)
+	vegasServiceImpl := app.NewVegasServiceImpl(drawService)
+	return vegasServiceImpl
 }
 
-// wire_gen.go:
-
-func InitializeVegasImplService() (*app.VegasServiceImpl, error) {
-	rmbRepository := NewRmbRepo()
-	activityRepository := NewActivityRepo()
-	drawService := NewDrawService(rmbRepository, activityRepository)
-	vegasServiceImpl := NewVegasServiceImpl(drawService)
-	return vegasServiceImpl, nil
+func InitRightApp() *app.RightServiceImpl {
+	rightRepository := persistence.NewRightRepository()
+	rightService := service.NewRightService(rightRepository)
+	rightServiceImpl := app.NewRightServiceImpl(rightService)
+	return rightServiceImpl
 }

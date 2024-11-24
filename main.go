@@ -31,10 +31,10 @@ func main() {
 		vegasImpl := app.NewVegasServiceImpl(drawService)*/
 
 	// use wire
-	vegasImpl, _ := wire.InitializeVegasImplService()
+	vegasImpl := wire.InitVegasApp()
 	vegasservice.RegisterService(svr, vegasImpl)
 
-	rightImpl, _ := wire.InitializeRightImplService()
+	rightImpl := wire.InitRightApp()
 	rightservice.RegisterService(svr, rightImpl)
 
 	err := svr.Run()

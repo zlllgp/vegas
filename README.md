@@ -27,3 +27,8 @@ https://blog.csdn.net/xidianhuihui/article/details/131128948
 go install github.com/golang/mock/mockgen@latest
 go get github.com/golang/mock/mock
 go get github.com/golang/mock/mockgen
+
+# todo
+redis
+cache
+log
