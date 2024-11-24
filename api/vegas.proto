@@ -8,18 +8,16 @@ message DrawRequest {
   string eh = 2;
 }
 message DrawResponse {
-  string code = 1;
-  string msg = 2;
-  repeated Right rights = 3;
+  BaseResponse base =1;
+  repeated Right rights = 2;
 }
+
 message ShowRequest {
   User user = 1;
   string eh = 2;
 }
-
 message ShowResponse {
-  string code = 1;
-  string msg = 2;
+  BaseResponse base =1;
 }
 
 service VegasService{

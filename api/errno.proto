@@ -1,0 +1,15 @@
+syntax = "proto3";
+package api;
+option go_package = "api";
+
+enum Err{
+  Success =0;
+  ParamErr =1000;
+  ActivityNotFoundRrr=1001;
+  CSRFErr =1002;
+  RegisterErr = 1003;
+  LoginErr    = 1004;
+  AuthorizationFailedErr=1005;
+  DataBaseErr=1006;
+  DrawErr=1007;
+}

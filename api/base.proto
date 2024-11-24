@@ -2,6 +2,11 @@ syntax = "proto3";
 package api;
 option go_package = "api";
 
+message BaseResponse{
+  int64 code=1;
+  string msg=2;
+}
+
 message User {
   int64 userId = 1;
   string userName = 2;

@@ -5,6 +5,7 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/zlllgp/vegas/internal/application/inf"
 	"github.com/zlllgp/vegas/kitex_gen/api"
+	"github.com/zlllgp/vegas/pkg/errors"
 )
 
 type RightServiceImpl struct {
@@ -22,6 +23,9 @@ func (s *RightServiceImpl) QueryRight(ctx context.Context, req *api.RightRequest
 		klog.Errorf("Query right err:%v", err)
 		resp = &api.RightResponse{
 			Rights: nil,
+			Base: &api.BaseResponse{
+				Code: errors.DataBaseErr.GetCode(),
+				Msg:  errors.DataBaseErr.GetMsg()},
 		}
 		return resp, nil
 	}
@@ -33,5 +37,8 @@ func (s *RightServiceImpl) QueryRight(ctx context.Context, req *api.RightRequest
 
 	return &api.RightResponse{
 		Rights: dtos,
+		Base: &api.BaseResponse{
+			Code: errors.Success.GetCode(),
+			Msg:  errors.Success.GetMsg()},
 	}, nil
 }

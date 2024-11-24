@@ -11,8 +11,9 @@ message RightRequest {
 }
 
 message RightResponse {
-  PaginationResponse page_resp = 1;
-  repeated Right rights = 2;
+  BaseResponse base =1;
+  PaginationResponse page_resp = 2;
+  repeated Right rights = 3;
 }
 
 service RightService{

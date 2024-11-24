@@ -1,5 +1,6 @@
 gen:
 	rm -rf kitex_gen/
+	kitex -no-fast-api -module github.com/zlllgp/vegas ./api/errno.proto
 	kitex -no-fast-api -module github.com/zlllgp/vegas ./api/base.proto
 	kitex -no-fast-api -service vegas -module github.com/zlllgp/vegas -I ./api ./api/vegas.proto
 	kitex -no-fast-api -service right -module github.com/zlllgp/vegas -I ./api ./api/right.proto

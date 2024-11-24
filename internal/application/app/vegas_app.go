@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/zlllgp/vegas/internal/application/inf"
 	"github.com/zlllgp/vegas/kitex_gen/api"
+	"github.com/zlllgp/vegas/pkg/errors"
 )
 
 type VegasServiceImpl struct {
@@ -21,15 +22,17 @@ func (s *VegasServiceImpl) Draw(ctx context.Context, req *api.DrawRequest) (resp
 	if err != nil {
 		resp = &api.DrawResponse{
 			Rights: nil,
-			Code:   "FAIL",
-			Msg:    "Exception",
+			Base: &api.BaseResponse{
+				Code: errors.DrawErr.GetCode(),
+				Msg:  errors.DrawErr.GetMsg()},
 		}
 		return resp, nil
 	}
 	return &api.DrawResponse{
 		Rights: drawResult.Rights,
-		Code:   "SUCCESS",
-		Msg:    "WIN",
+		Base: &api.BaseResponse{
+			Code: errors.Success.GetCode(),
+			Msg:  errors.Success.GetMsg()},
 	}, err
 }
 
