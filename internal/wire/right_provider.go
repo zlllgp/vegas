@@ -9,6 +9,7 @@ import (
 	"github.com/zlllgp/vegas/internal/infrastructure/persistence"
 )
 
+// https://zhuanlan.zhihu.com/p/691115410
 // do wire before use this code then auto generate down code
 // step1 add New and append VegasProviderSet
 // step2 del wire_gen.go !wireinject

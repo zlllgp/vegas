@@ -10,14 +10,14 @@ import (
 	"strconv"
 )
 
-type RedisRepository struct {
+type RedisActivity struct {
 }
 
-func NewRedisRepository() *RedisRepository {
-	return &RedisRepository{}
+func NewRedisActivity() *RedisActivity {
+	return &RedisActivity{}
 }
 
-func (s *RedisRepository) StoreActivity(ctx context.Context, id int64, activity *entity.Activity) error {
+func (s *RedisActivity) StoreActivity(ctx context.Context, id int64, activity *entity.Activity) error {
 	aJson, err := json.Marshal(activity)
 	if err != nil {
 		return err
@@ -29,7 +29,7 @@ func (s *RedisRepository) StoreActivity(ctx context.Context, id int64, activity 
 	return nil
 }
 
-func (s *RedisRepository) GetActivity(ctx context.Context, id int64) (*entity.Activity, error) {
+func (s *RedisActivity) GetActivity(ctx context.Context, id int64) (*entity.Activity, error) {
 	result, err := rdb.Get(ctx, "activity:"+strconv.FormatInt(id, 10)).Result()
 	if errors.Is(err, redis.Nil) {
 		return nil, errno.ActivityNotFoundErr

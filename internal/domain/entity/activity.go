@@ -3,9 +3,9 @@ package entity
 import "github.com/zlllgp/vegas/internal/infrastructure/dal/wk/model"
 
 type Activity struct {
-	ID       int64
-	Name     string
-	TenantID int32
+	ID       int64  `json:"id"`
+	Name     string `json:"name"`
+	TenantID int32  `json:"tenant_id"`
 }
 
 func NewActivity(options ...ActivityOption) *Activity {

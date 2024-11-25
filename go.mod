@@ -27,10 +27,12 @@ require (
 require (
 	contrib.go.opencensus.io/exporter/ocagent v0.7.0 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/allegro/bigcache/v3 v3.1.0 // indirect
 	github.com/andeya/ameda v1.5.3 // indirect
 	github.com/andeya/goutil v1.0.1 // indirect
 	github.com/apache/rocketmq-clients/golang/v5 v5.1.1-rc1 // indirect
 	github.com/apache/thrift v0.21.0 // indirect
+	github.com/bluele/gcache v0.0.2 // indirect
 	github.com/bufbuild/protocompile v0.14.1 // indirect
 	github.com/bwmarrin/snowflake v0.3.0 // indirect
 	github.com/bytedance/gopkg v0.1.1 // indirect
@@ -53,6 +55,7 @@ require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dchest/siphash v1.2.3 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
+	github.com/eko/gocache/lib/v4 v4.1.6 // indirect
 	github.com/fatih/structtag v1.2.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.7 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect

@@ -10,6 +10,7 @@ import (
 	"github.com/zlllgp/vegas/internal/application/app"
 	"github.com/zlllgp/vegas/internal/application/config"
 	"github.com/zlllgp/vegas/internal/domain/service"
+	"github.com/zlllgp/vegas/internal/infrastructure/cache"
 	"github.com/zlllgp/vegas/internal/infrastructure/dal"
 	"github.com/zlllgp/vegas/internal/infrastructure/persistence"
 	"github.com/zlllgp/vegas/internal/infrastructure/redis"
@@ -64,7 +65,7 @@ func digInit(svr server.Server) {
 	c.Provide(rpc.NewRmbRepository)
 	c.Provide(service.NewDrawService)
 	c.Provide(app.NewVegasServiceImpl)
-	c.Provide(redis.NewRedisRepository)
+	c.Provide(redis.NewRedisActivity)
 
 	var vegasServiceImpl app.VegasServiceImpl
 	c.Invoke(func(vegasApp app.VegasServiceImpl) {
@@ -130,5 +131,8 @@ func kitexInit() (opts []server.Option) {
 	dal.InitWkDB()
 	dal.InitYodaDB()
 	redis.InitRedis()
+	//cache init
+	cache.InitBigCache()
+	cache.InitGCache()
 	return
 }

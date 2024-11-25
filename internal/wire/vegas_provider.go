@@ -4,13 +4,16 @@ import (
 	"github.com/google/wire"
 	"github.com/zlllgp/vegas/internal/application/app"
 	"github.com/zlllgp/vegas/internal/application/inf"
+	"github.com/zlllgp/vegas/internal/domain/entity"
 	"github.com/zlllgp/vegas/internal/domain/repository"
 	"github.com/zlllgp/vegas/internal/domain/service"
+	"github.com/zlllgp/vegas/internal/infrastructure/cache"
 	"github.com/zlllgp/vegas/internal/infrastructure/persistence"
 	"github.com/zlllgp/vegas/internal/infrastructure/redis"
 	"github.com/zlllgp/vegas/internal/infrastructure/rpc"
 )
 
+// https://zhuanlan.zhihu.com/p/691115410
 // do wire before use this code then auto generate down code
 // step1 add New and append VegasProviderSet
 // step2 del wire_gen.go !wireinject
@@ -34,8 +37,14 @@ var RmbRepoProvider = wire.NewSet(
 )
 
 var RedisActivityRepoProvider = wire.NewSet(
-	redis.NewRedisRepository,
-	wire.Bind(new(repository.RedisActivityRepository), new(*redis.RedisRepository)),
+	redis.NewRedisActivity,
+	wire.Bind(new(repository.RedisActivityRepository), new(*redis.RedisActivity)),
+)
+
+var CacheRepositoryProvider = wire.NewSet(
+	// TODO error
+	cache.NewBigCache[entity.Activity],
+	wire.Bind(new(repository.CacheRepository[entity.Activity]), new(*cache.BigCache[entity.Activity])),
 )
 
 var DrawServiceProvider = wire.NewSet(
@@ -48,5 +57,6 @@ var VegasAppProviderSet = wire.NewSet(
 	ActivityRepoProvider,
 	RmbRepoProvider,
 	RedisActivityRepoProvider,
+	CacheRepositoryProvider,
 	DrawServiceProvider,
 )

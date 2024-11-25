@@ -16,13 +16,19 @@ type DrawService struct {
 	rmbRep   repository.RmbRepository
 	actRep   repository.ActivityRepository
 	redisRep repository.RedisActivityRepository
+	cacheRep repository.CacheInterface
 }
 
-func NewDrawService(rmbRep repository.RmbRepository, actRep repository.ActivityRepository, redisRep repository.RedisActivityRepository) *DrawService {
+func NewDrawService(
+	rmbRep repository.RmbRepository,
+	actRep repository.ActivityRepository,
+	redisRep repository.RedisActivityRepository,
+	cacheRep repository.CacheInterface) *DrawService {
 	return &DrawService{
 		rmbRep:   rmbRep,
 		actRep:   actRep,
 		redisRep: redisRep,
+		cacheRep: cacheRep,
 	}
 }
 
@@ -39,18 +45,25 @@ func (s *DrawService) Draw(ctx context.Context, userId int64, eh string) (*entit
 	if !safe {
 		return nil, errors.New("not safe")
 	}
-
-	activity, err := s.redisRep.GetActivity(ctx, activityId)
-	if errors.Is(err, errno.ActivityNotFoundErr) {
-		// judge activity
-		activityDo, err := s.actRep.GetById(ctx, activityId)
-		if err != nil {
-			return nil, errors.New("activity not found")
+	// first local cache
+	activity, ok := s.cacheRep.Get("activity:" + strconv.FormatInt(activityId, 10))
+	if !ok {
+		//second redis cache
+		rActivity, err := s.redisRep.GetActivity(ctx, activityId)
+		// third db
+		if errors.Is(err, errno.ActivityNotFoundErr) {
+			activityDo, err := s.actRep.GetById(ctx, activityId)
+			if err != nil {
+				return nil, errors.New("activity not found")
+			}
+			dActivity := entity.NewActivityWithModel(activityDo)
+			klog.Infof("activity from db , id : %+v", activity)
+			s.redisRep.StoreActivity(ctx, activityId, dActivity)
 		}
-		activity := entity.NewActivityWithModel(activityDo)
-		klog.Infof("activity from db , id : %d, name : %s", activity.ID, activity.Name)
-		s.redisRep.StoreActivity(ctx, activityId, activity)
+		activity = *rActivity
+		s.cacheRep.Set("activity:"+strconv.FormatInt(activityId, 10), activity, time.Until(time.Now()))
 	}
+
 	klog.Infof("activity : %+v", activity)
 
 	// has wins rights
