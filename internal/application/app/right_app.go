@@ -4,8 +4,8 @@ import (
 	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/zlllgp/vegas/internal/application/inf"
+	"github.com/zlllgp/vegas/internal/infrastructure/errors"
 	"github.com/zlllgp/vegas/kitex_gen/api"
-	"github.com/zlllgp/vegas/pkg/errors"
 )
 
 type RightServiceImpl struct {
