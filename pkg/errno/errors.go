@@ -1,4 +1,4 @@
-package errors
+package errno
 
 import (
 	"github.com/zlllgp/ecode"

@@ -7,6 +7,7 @@ import (
 	"github.com/zlllgp/vegas/internal/domain/repository"
 	"github.com/zlllgp/vegas/internal/domain/service"
 	"github.com/zlllgp/vegas/internal/infrastructure/persistence"
+	"github.com/zlllgp/vegas/internal/infrastructure/redis"
 	"github.com/zlllgp/vegas/internal/infrastructure/rpc"
 )
 
@@ -32,6 +33,11 @@ var RmbRepoProvider = wire.NewSet(
 	wire.Bind(new(repository.RmbRepository), new(*rpc.RmbRepository)),
 )
 
+var RedisActivityRepoProvider = wire.NewSet(
+	redis.NewRedisRepository,
+	wire.Bind(new(repository.RedisActivityRepository), new(*redis.RedisRepository)),
+)
+
 var DrawServiceProvider = wire.NewSet(
 	service.NewDrawService,
 	wire.Bind(new(inf.DrawService), new(*service.DrawService)),
@@ -41,5 +47,6 @@ var VegasAppProviderSet = wire.NewSet(
 	app.NewVegasServiceImpl,
 	ActivityRepoProvider,
 	RmbRepoProvider,
+	RedisActivityRepoProvider,
 	DrawServiceProvider,
 )

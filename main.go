@@ -16,6 +16,7 @@ import (
 	"github.com/zlllgp/vegas/internal/infrastructure/rpc"
 	"github.com/zlllgp/vegas/internal/infrastructure/utils"
 	"github.com/zlllgp/vegas/internal/infrastructure/viper"
+	"github.com/zlllgp/vegas/internal/wire"
 	"github.com/zlllgp/vegas/kitex_gen/api/rightservice"
 	"github.com/zlllgp/vegas/kitex_gen/api/vegasservice"
 	"github.com/zlllgp/vegas/pkg/mw"
@@ -29,20 +30,9 @@ func main() {
 	opts := kitexInit()
 
 	svr := server.NewServer(opts...)
-	// construct
-	/*	rmbRep := rpc.NewRmbRepository()
-		actRep := persistence.NewActivityRepository()
-		drawService := service.NewDrawService(rmbRep, actRep)
-		vegasImpl := app.NewVegasServiceImpl(drawService)*/
 
-	// one: use wire
-	/*	vegasImpl := wire.InitVegasApp()
-		vegasservice.RegisterService(svr, vegasImpl)
-		rightImpl := wire.InitRightApp()
-		rightservice.RegisterService(svr, rightImpl)*/
-	// two: use dig
-	c := digInit()
-	initService(c, svr)
+	wireInit(svr)
+	//digInit(svr)
 
 	err := svr.Run()
 	if err != nil {
@@ -50,7 +40,32 @@ func main() {
 	}
 }
 
-func initService(c *dig.Container, svr server.Server) {
+func wireInit(svr server.Server) {
+	// construct
+	/*	rmbRep := rpc.NewRmbRepository()
+		actRep := persistence.NewActivityRepository()
+		drawService := service.NewDrawService(rmbRep, actRep)
+		vegasImpl := app.NewVegasServiceImpl(drawService)*/
+
+	// one: use wire
+	vegasImpl := wire.InitVegasApp()
+	vegasservice.RegisterService(svr, vegasImpl)
+	rightImpl := wire.InitRightApp()
+	rightservice.RegisterService(svr, rightImpl)
+}
+
+func digInit(svr server.Server) {
+	c := dig.New()
+	c.Provide(persistence.NewRightRepository)
+	c.Provide(service.NewRightService)
+	c.Provide(app.NewRightServiceImpl)
+
+	c.Provide(persistence.NewActivityRepository)
+	c.Provide(rpc.NewRmbRepository)
+	c.Provide(service.NewDrawService)
+	c.Provide(app.NewVegasServiceImpl)
+	c.Provide(redis.NewRedisRepository)
+
 	var vegasServiceImpl app.VegasServiceImpl
 	c.Invoke(func(vegasApp app.VegasServiceImpl) {
 		vegasServiceImpl = vegasApp
@@ -62,19 +77,6 @@ func initService(c *dig.Container, svr server.Server) {
 		rightServiceImpl = rightApp
 	})
 	rightservice.RegisterService(svr, &rightServiceImpl)
-}
-
-func digInit() *dig.Container {
-	c := dig.New()
-	c.Provide(persistence.NewRightRepository)
-	c.Provide(service.NewRightService)
-	c.Provide(app.NewRightServiceImpl)
-
-	c.Provide(persistence.NewActivityRepository)
-	c.Provide(rpc.NewRmbRepository)
-	c.Provide(service.NewDrawService)
-	c.Provide(app.NewVegasServiceImpl)
-	return c
 }
 
 func kitexInit() (opts []server.Option) {

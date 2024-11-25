@@ -3,8 +3,8 @@ package app
 import (
 	"context"
 	"github.com/zlllgp/vegas/internal/application/inf"
-	"github.com/zlllgp/vegas/internal/infrastructure/errors"
 	"github.com/zlllgp/vegas/kitex_gen/api"
+	"github.com/zlllgp/vegas/pkg/errno"
 )
 
 type VegasServiceImpl struct {
@@ -23,16 +23,16 @@ func (s *VegasServiceImpl) Draw(ctx context.Context, req *api.DrawRequest) (resp
 		resp = &api.DrawResponse{
 			Rights: nil,
 			Base: &api.BaseResponse{
-				Code: errors.DrawErr.GetCode(),
-				Msg:  errors.DrawErr.GetMsg()},
+				Code: errno.DrawErr.GetCode(),
+				Msg:  errno.DrawErr.GetMsg()},
 		}
 		return resp, nil
 	}
 	return &api.DrawResponse{
 		Rights: drawResult.Rights,
 		Base: &api.BaseResponse{
-			Code: errors.Success.GetCode(),
-			Msg:  errors.Success.GetMsg()},
+			Code: errno.Success.GetCode(),
+			Msg:  errno.Success.GetMsg()},
 	}, err
 }
 

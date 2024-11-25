@@ -7,19 +7,22 @@ import (
 	"github.com/zlllgp/vegas/internal/domain/entity"
 	"github.com/zlllgp/vegas/internal/domain/repository"
 	"github.com/zlllgp/vegas/kitex_gen/api"
+	"github.com/zlllgp/vegas/pkg/errno"
 	"strconv"
 	"time"
 )
 
 type DrawService struct {
-	rmbRep repository.RmbRepository
-	actRep repository.ActivityRepository
+	rmbRep   repository.RmbRepository
+	actRep   repository.ActivityRepository
+	redisRep repository.RedisActivityRepository
 }
 
-func NewDrawService(rmbRep repository.RmbRepository, actRep repository.ActivityRepository) *DrawService {
+func NewDrawService(rmbRep repository.RmbRepository, actRep repository.ActivityRepository, redisRep repository.RedisActivityRepository) *DrawService {
 	return &DrawService{
-		rmbRep: rmbRep,
-		actRep: actRep,
+		rmbRep:   rmbRep,
+		actRep:   actRep,
+		redisRep: redisRep,
 	}
 }
 
@@ -36,13 +39,20 @@ func (s *DrawService) Draw(ctx context.Context, userId int64, eh string) (*entit
 	if !safe {
 		return nil, errors.New("not safe")
 	}
-	// judge activity
-	activityDo, err := s.actRep.GetById(ctx, activityId)
-	if err != nil {
-		return nil, errors.New("activity not found")
+
+	activity, err := s.redisRep.GetActivity(ctx, activityId)
+	if errors.Is(err, errno.ActivityNotFoundErr) {
+		// judge activity
+		activityDo, err := s.actRep.GetById(ctx, activityId)
+		if err != nil {
+			return nil, errors.New("activity not found")
+		}
+		activity := entity.NewActivityWithModel(activityDo)
+		klog.Infof("activity from db , id : %d, name : %s", activity.ID, activity.Name)
+		s.redisRep.StoreActivity(ctx, activityId, activity)
 	}
-	activity := entity.NewActivityWithModel(activityDo)
-	klog.Infof("activity id : %d, name : %s", activity.ID, activity.Name)
+	klog.Infof("activity : %+v", activity)
+
 	// has wins rights
 
 	// mock do draw

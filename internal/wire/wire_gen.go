@@ -10,6 +10,7 @@ import (
 	"github.com/zlllgp/vegas/internal/application/app"
 	"github.com/zlllgp/vegas/internal/domain/service"
 	"github.com/zlllgp/vegas/internal/infrastructure/persistence"
+	"github.com/zlllgp/vegas/internal/infrastructure/redis"
 	"github.com/zlllgp/vegas/internal/infrastructure/rpc"
 )
 
@@ -18,10 +19,13 @@ import (
 func InitVegasApp() *app.VegasServiceImpl {
 	rmbRepository := rpc.NewRmbRepository()
 	activityRepository := persistence.NewActivityRepository()
-	drawService := service.NewDrawService(rmbRepository, activityRepository)
+	redisRepository := redis.NewRedisRepository()
+	drawService := service.NewDrawService(rmbRepository, activityRepository, redisRepository)
 	vegasServiceImpl := app.NewVegasServiceImpl(drawService)
 	return vegasServiceImpl
 }
+
+// wire_gen.go:
 
 func InitRightApp() *app.RightServiceImpl {
 	rightRepository := persistence.NewRightRepository()
