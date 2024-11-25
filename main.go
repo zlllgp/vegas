@@ -11,7 +11,6 @@ import (
 	"github.com/zlllgp/vegas/internal/application/config"
 	"github.com/zlllgp/vegas/internal/domain/service"
 	"github.com/zlllgp/vegas/internal/infrastructure/dal"
-	"github.com/zlllgp/vegas/internal/infrastructure/mw"
 	"github.com/zlllgp/vegas/internal/infrastructure/persistence"
 	"github.com/zlllgp/vegas/internal/infrastructure/redis"
 	"github.com/zlllgp/vegas/internal/infrastructure/rpc"
@@ -19,6 +18,7 @@ import (
 	"github.com/zlllgp/vegas/internal/infrastructure/viper"
 	"github.com/zlllgp/vegas/kitex_gen/api/rightservice"
 	"github.com/zlllgp/vegas/kitex_gen/api/vegasservice"
+	"github.com/zlllgp/vegas/pkg/mw"
 	"go.uber.org/dig"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"net"
@@ -51,17 +51,17 @@ func main() {
 }
 
 func initService(c *dig.Container, svr server.Server) {
-	var vegasService app.VegasServiceImpl
-	c.Invoke(func(vegasServiceImpl app.VegasServiceImpl) {
-		vegasService = vegasServiceImpl
+	var vegasServiceImpl app.VegasServiceImpl
+	c.Invoke(func(vegasApp app.VegasServiceImpl) {
+		vegasServiceImpl = vegasApp
 	})
-	vegasservice.RegisterService(svr, &vegasService)
+	vegasservice.RegisterService(svr, &vegasServiceImpl)
 
-	var rightService app.RightServiceImpl
-	c.Invoke(func(rightServiceImpl app.RightServiceImpl) {
-		rightService = rightServiceImpl
+	var rightServiceImpl app.RightServiceImpl
+	c.Invoke(func(rightApp app.RightServiceImpl) {
+		rightServiceImpl = rightApp
 	})
-	rightservice.RegisterService(svr, &rightService)
+	rightservice.RegisterService(svr, &rightServiceImpl)
 }
 
 func digInit() *dig.Container {
