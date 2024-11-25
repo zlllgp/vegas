@@ -57,14 +57,18 @@ func (s *DrawService) Draw(ctx context.Context, userId int64, eh string) (*entit
 				return nil, errors.New("activity not found")
 			}
 			dActivity := entity.NewActivityWithModel(activityDo)
-			klog.Infof("activity from db , id : %+v", activity)
+			klog.Infof("activity from db , %+v", activity)
 			s.redisRep.StoreActivity(ctx, activityId, dActivity)
+			s.cacheRep.Set("activity:"+strconv.FormatInt(activityId, 10), dActivity, time.Until(time.Now()))
+			activity = dActivity
+		} else {
+			activity = rActivity
+			klog.Infof("activity from redis ,  %+v", activity)
+			s.cacheRep.Set("activity:"+strconv.FormatInt(activityId, 10), rActivity, time.Until(time.Now()))
 		}
-		activity = *rActivity
-		s.cacheRep.Set("activity:"+strconv.FormatInt(activityId, 10), activity, time.Until(time.Now()))
+	} else {
+		klog.Infof("activity from cache ,  %+v", activity)
 	}
-
-	klog.Infof("activity : %+v", activity)
 
 	// has wins rights
 
