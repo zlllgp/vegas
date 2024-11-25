@@ -12,6 +12,7 @@ import (
 	"sync"
 )
 
+// https://www.topgoer.cn/docs/gochajian/gochajian-1cks2r13n3n21
 func Init() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
