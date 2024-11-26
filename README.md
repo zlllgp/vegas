@@ -7,8 +7,8 @@
 
 如何被其他模块依赖proto api , 增加版本号发布tag
 ```
-git tag v1.0.2
-git push origin v1.0.2
+git tag v1.0.3
+git push origin v1.0.3
 github 页面上发布 release
 ```
 
