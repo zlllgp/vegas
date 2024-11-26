@@ -14,22 +14,19 @@ import (
 )
 
 type DrawService struct {
-	rmbRep   repository.RmbRepository
-	actRep   repository.ActivityRepository
-	redisRep repository.RedisActivityRepository
-	cacheRep repository.CacheInterface
+	rmbRepo   repository.RmbRepository
+	actRepo   repository.ActivityRepository
+	redisRepo repository.RedisActivityRepository
+	cacheRepo repository.CacheRepository
 }
 
 func NewDrawService(
-	rmbRep repository.RmbRepository,
-	actRep repository.ActivityRepository,
-	redisRep repository.RedisActivityRepository,
-	cacheRep repository.CacheInterface) *DrawService {
+	rmbRepo repository.RmbRepository,
+	actRepo repository.ActivityRepository,
+	redisRepo repository.RedisActivityRepository,
+	cacheRepo repository.CacheRepository) *DrawService {
 	return &DrawService{
-		rmbRep:   rmbRep,
-		actRep:   actRep,
-		redisRep: redisRep,
-		cacheRep: cacheRep,
+		rmbRepo: rmbRepo, actRepo: actRepo, redisRepo: redisRepo, cacheRepo: cacheRepo,
 	}
 }
 
@@ -42,31 +39,31 @@ func (s *DrawService) Draw(ctx context.Context, userId int64, eh string) (*entit
 	}
 
 	// judge safe
-	safe := s.rmbRep.IsSafe(ctx, userId)
+	safe := s.rmbRepo.IsSafe(ctx, userId)
 	if !safe {
-		return nil, errors.New("not safe")
+		return nil, errno.DrawErr
 	}
 	var activity *entity.Activity
 	// first local cache
-	cacheActivity, ok := s.cacheRep.Get("activity:" + strconv.FormatInt(activityId, 10))
+	cacheActivity, ok := s.cacheRepo.Get("activity:" + strconv.FormatInt(activityId, 10))
 	if !ok {
 		//second redis cache
-		rActivity, err := s.redisRep.GetActivity(ctx, activityId)
+		rActivity, err := s.redisRepo.GetActivity(ctx, activityId)
 		// third db
 		if errors.Is(err, errno.ActivityNotFoundErr) {
-			activityDo, err := s.actRep.GetById(ctx, activityId)
+			activityDo, err := s.actRepo.GetById(ctx, activityId)
 			if err != nil {
 				return nil, errors.New("activity not found")
 			}
 			dActivity := entity.NewActivityWithModel(activityDo)
 			activity = dActivity
 			klog.Infof("activity from db , %+v", dActivity)
-			s.redisRep.StoreActivity(ctx, activityId, dActivity)
-			s.cacheRep.Set("activity:"+strconv.FormatInt(activityId, 10), dActivity, time.Until(time.Now()))
+			s.redisRepo.StoreActivity(ctx, activityId, dActivity)
+			s.cacheRepo.Set("activity:"+strconv.FormatInt(activityId, 10), dActivity, time.Until(time.Now()))
 		} else {
 			activity = rActivity
 			klog.Infof("activity from redis ,  %+v", rActivity)
-			s.cacheRep.Set("activity:"+strconv.FormatInt(activityId, 10), rActivity, time.Until(time.Now()))
+			s.cacheRepo.Set("activity:"+strconv.FormatInt(activityId, 10), rActivity, time.Until(time.Now()))
 		}
 	} else {
 		if b, ok := cacheActivity.([]uint8); ok {

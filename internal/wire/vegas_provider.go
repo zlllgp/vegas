@@ -4,7 +4,6 @@ import (
 	"github.com/google/wire"
 	"github.com/zlllgp/vegas/internal/application/app"
 	"github.com/zlllgp/vegas/internal/application/inf"
-	"github.com/zlllgp/vegas/internal/domain/entity"
 	"github.com/zlllgp/vegas/internal/domain/repository"
 	"github.com/zlllgp/vegas/internal/domain/service"
 	"github.com/zlllgp/vegas/internal/infrastructure/cache"
@@ -42,9 +41,8 @@ var RedisActivityRepoProvider = wire.NewSet(
 )
 
 var CacheRepositoryProvider = wire.NewSet(
-	// TODO error
-	cache.NewBigCache[entity.Activity],
-	wire.Bind(new(repository.CacheRepository[entity.Activity]), new(*cache.BigCache[entity.Activity])),
+	cache.NewGCache(),
+	wire.Bind(new(repository.CacheRepository), new(*cache.GCache)),
 )
 
 var DrawServiceProvider = wire.NewSet(
