@@ -40,8 +40,13 @@ var RedisActivityRepoProvider = wire.NewSet(
 )
 
 var CacheRepositoryProvider = wire.NewSet(
-	cache.NewGCache(),
+	cache.NewGCache,
 	wire.Bind(new(repository.CacheRepository), new(*cache.GCache)),
+)
+
+var ActivityServiceProvider = wire.NewSet(
+	service.NewActivityServiceImpl,
+	wire.Bind(new(service.ActivityService), new(*service.ActivityServiceImpl)),
 )
 
 var DrawServiceProvider = wire.NewSet(
@@ -55,5 +60,6 @@ var VegasAppProviderSet = wire.NewSet(
 	RmbRepoProvider,
 	RedisActivityRepoProvider,
 	CacheRepositoryProvider,
+	ActivityServiceProvider,
 	DrawServiceProvider,
 )

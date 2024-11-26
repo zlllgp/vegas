@@ -32,7 +32,7 @@ func TestMain(m *testing.M) {
 	os.Exit(exitCode)
 }
 
-func TestDrawService_Draw(t *testing.T) {
+func TestDrawService_Draw_NotSafe(t *testing.T) {
 	mockRmbRepo.EXPECT().IsSafe(context.Background(), int64(1)).Return(false)
 
 	result, err := drawService.Draw(context.Background(), int64(1), "1")
