@@ -3,7 +3,6 @@ package wire
 import (
 	"github.com/google/wire"
 	"github.com/zlllgp/vegas/internal/application/app"
-	"github.com/zlllgp/vegas/internal/application/inf"
 	"github.com/zlllgp/vegas/internal/domain/repository"
 	"github.com/zlllgp/vegas/internal/domain/service"
 	"github.com/zlllgp/vegas/internal/infrastructure/persistence"
@@ -28,8 +27,8 @@ var RightRepoProvider = wire.NewSet(
 )
 
 var RightServiceProvider = wire.NewSet(
-	service.NewRightService,
-	wire.Bind(new(inf.RightService), new(*service.RightService)),
+	service.NewRightServiceImpl,
+	wire.Bind(new(service.RightService), new(*service.RightServiceImpl)),
 )
 
 var RightAppProviderSet = wire.NewSet(

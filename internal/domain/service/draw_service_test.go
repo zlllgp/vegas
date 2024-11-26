@@ -16,7 +16,7 @@ var (
 	mockActRepo   *mock_repository.MockActivityRepository
 	mockRedisRepo *mock_repository.MockRedisActivityRepository
 	mockCacheRepo *mock_repository.MockCacheRepository
-	drawService   *DrawService
+	drawService   *DrawServiceImpl
 )
 
 func TestMain(m *testing.M) {
@@ -25,7 +25,7 @@ func TestMain(m *testing.M) {
 	mockActRepo = mock_repository.NewMockActivityRepository(mockCtrl)
 	mockRedisRepo = mock_repository.NewMockRedisActivityRepository(mockCtrl)
 	mockCacheRepo = mock_repository.NewMockCacheRepository(mockCtrl)
-	drawService = NewDrawService(mockRmbRepo, mockActRepo, mockRedisRepo, mockCacheRepo)
+	drawService = NewDrawServiceImpl(mockRmbRepo, mockActRepo, mockRedisRepo, mockCacheRepo)
 	exitCode := m.Run()
 
 	mockCtrl.Finish()

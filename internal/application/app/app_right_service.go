@@ -3,16 +3,16 @@ package app
 import (
 	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/zlllgp/vegas/internal/application/inf"
+	"github.com/zlllgp/vegas/internal/domain/service"
 	"github.com/zlllgp/vegas/kitex_gen/api"
 	"github.com/zlllgp/vegas/pkg/errno"
 )
 
 type RightServiceImpl struct {
-	rightService inf.RightService
+	rightService service.RightService
 }
 
-func NewRightServiceImpl(rightService inf.RightService) *RightServiceImpl {
+func NewRightServiceImpl(rightService service.RightService) *RightServiceImpl {
 	return &RightServiceImpl{}
 }
 

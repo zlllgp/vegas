@@ -3,7 +3,6 @@ package wire
 import (
 	"github.com/google/wire"
 	"github.com/zlllgp/vegas/internal/application/app"
-	"github.com/zlllgp/vegas/internal/application/inf"
 	"github.com/zlllgp/vegas/internal/domain/repository"
 	"github.com/zlllgp/vegas/internal/domain/service"
 	"github.com/zlllgp/vegas/internal/infrastructure/cache"
@@ -46,8 +45,8 @@ var CacheRepositoryProvider = wire.NewSet(
 )
 
 var DrawServiceProvider = wire.NewSet(
-	service.NewDrawService,
-	wire.Bind(new(inf.DrawService), new(*service.DrawService)),
+	service.NewDrawServiceImpl,
+	wire.Bind(new(service.DrawService), new(*service.DrawServiceImpl)),
 )
 
 var VegasAppProviderSet = wire.NewSet(

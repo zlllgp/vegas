@@ -11,15 +11,19 @@ import (
 	"gorm.io/gen"
 )
 
-type RightService struct {
+type RightService interface {
+	Find(ctx context.Context, userId int64, planId int64, pageRequest *api.PaginationRequest, searchFields ...*api.SearchField) ([]*entity.Right, error)
+}
+
+type RightServiceImpl struct {
 	rightRep repository.RightRepository
 }
 
-func NewRightService(rightRep repository.RightRepository) *RightService {
-	return &RightService{rightRep: rightRep}
+func NewRightServiceImpl(rightRep repository.RightRepository) *RightServiceImpl {
+	return &RightServiceImpl{rightRep: rightRep}
 }
 
-func (s *RightService) Find(ctx context.Context, userId int64, planId int64, pageRequest *api.PaginationRequest, searchFields ...*api.SearchField) ([]*entity.Right, error) {
+func (s *RightServiceImpl) Find(ctx context.Context, userId int64, planId int64, pageRequest *api.PaginationRequest, searchFields ...*api.SearchField) ([]*entity.Right, error) {
 	page, size := pageRequest.GetPage(), pageRequest.GetSize()
 	offset := (page - 1) * size
 	limit := size
@@ -41,7 +45,7 @@ func (s *RightService) Find(ctx context.Context, userId int64, planId int64, pag
 	return rights, nil
 }
 
-func (s *RightService) parseSearchFields(searchFields ...*api.SearchField) ([]gen.Condition, error) {
+func (s *RightServiceImpl) parseSearchFields(searchFields ...*api.SearchField) ([]gen.Condition, error) {
 	result := make([]gen.Condition, len(searchFields))
 	for i := 0; i < len(searchFields); i++ {
 		fieldName := searchFields[i].Field
@@ -54,7 +58,7 @@ func (s *RightService) parseSearchFields(searchFields ...*api.SearchField) ([]ge
 	return result, nil
 }
 
-func (p *RightService) parse(fieldName string, operator api.SearchOperator, value string) (gen.Condition, error) {
+func (p *RightServiceImpl) parse(fieldName string, operator api.SearchOperator, value string) (gen.Condition, error) {
 	switch fieldName {
 	case "userName":
 		return entity.NewSearchFiled(query.Q.UserRight.UserName, fieldName, operator).ToGormCondition(value)

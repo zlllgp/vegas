@@ -2,16 +2,16 @@ package app
 
 import (
 	"context"
-	"github.com/zlllgp/vegas/internal/application/inf"
+	"github.com/zlllgp/vegas/internal/domain/service"
 	"github.com/zlllgp/vegas/kitex_gen/api"
 	"github.com/zlllgp/vegas/pkg/errno"
 )
 
 type VegasServiceImpl struct {
-	drawService inf.DrawService
+	drawService service.DrawService
 }
 
-func NewVegasServiceImpl(drawService inf.DrawService) *VegasServiceImpl {
+func NewVegasServiceImpl(drawService service.DrawService) *VegasServiceImpl {
 	return &VegasServiceImpl{drawService: drawService}
 }
 

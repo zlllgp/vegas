@@ -20,14 +20,14 @@ func InitVegasApp() *app.VegasServiceImpl {
 	//cacheRepository := cache.NewBigCache[entity.Activity]()
 	//cacheRepository := cache.NewGCacheT[entity.Activity]()
 	cacheRepository := cache.NewGCache()
-	drawService := service.NewDrawService(rmbRepository, activityRepository, redisRepository, cacheRepository)
+	drawService := service.NewDrawServiceImpl(rmbRepository, activityRepository, redisRepository, cacheRepository)
 	vegasServiceImpl := app.NewVegasServiceImpl(drawService)
 	return vegasServiceImpl
 }
 
 func InitRightApp() *app.RightServiceImpl {
 	rightRepository := persistence.NewRightRepository()
-	rightService := service.NewRightService(rightRepository)
+	rightService := service.NewRightServiceImpl(rightRepository)
 	rightServiceImpl := app.NewRightServiceImpl(rightService)
 	return rightServiceImpl
 }

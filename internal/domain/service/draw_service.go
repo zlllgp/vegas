@@ -13,24 +13,28 @@ import (
 	"time"
 )
 
-type DrawService struct {
+type DrawService interface {
+	Draw(ctx context.Context, userId int64, eh string) (*entity.DrawResult, error)
+}
+
+type DrawServiceImpl struct {
 	rmbRepo   repository.RmbRepository
 	actRepo   repository.ActivityRepository
 	redisRepo repository.RedisActivityRepository
 	cacheRepo repository.CacheRepository
 }
 
-func NewDrawService(
+func NewDrawServiceImpl(
 	rmbRepo repository.RmbRepository,
 	actRepo repository.ActivityRepository,
 	redisRepo repository.RedisActivityRepository,
-	cacheRepo repository.CacheRepository) *DrawService {
-	return &DrawService{
+	cacheRepo repository.CacheRepository) *DrawServiceImpl {
+	return &DrawServiceImpl{
 		rmbRepo: rmbRepo, actRepo: actRepo, redisRepo: redisRepo, cacheRepo: cacheRepo,
 	}
 }
 
-func (s *DrawService) Draw(ctx context.Context, userId int64, eh string) (*entity.DrawResult, error) {
+func (s *DrawServiceImpl) Draw(ctx context.Context, userId int64, eh string) (*entity.DrawResult, error) {
 	//decode eh to activityId , planId
 	activityId, err := strconv.ParseInt(eh, 10, 64)
 	planId, err := strconv.ParseInt(eh, 10, 64)

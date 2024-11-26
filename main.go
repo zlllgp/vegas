@@ -44,7 +44,7 @@ func wireInit(svr server.Server) {
 	// construct
 	/*	rmbRep := rpc.NewRmbRepository()
 		actRep := persistence.NewActivityRepository()
-		drawService := service.NewDrawService(rmbRep, actRep)
+		drawService := service.NewDrawServiceImpl(rmbRep, actRep)
 		vegasImpl := app.NewVegasServiceImpl(drawService)*/
 
 	// one: use wire
@@ -57,12 +57,12 @@ func wireInit(svr server.Server) {
 func digInit(svr server.Server) {
 	c := dig.New()
 	c.Provide(persistence.NewRightRepository)
-	c.Provide(service.NewRightService)
+	c.Provide(service.NewRightServiceImpl)
 	c.Provide(app.NewRightServiceImpl)
 
 	c.Provide(persistence.NewActivityRepository)
 	c.Provide(rpc.NewRmbRepository)
-	c.Provide(service.NewDrawService)
+	c.Provide(service.NewDrawServiceImpl)
 	c.Provide(app.NewVegasServiceImpl)
 	c.Provide(redis.NewRedisActivity)
 
