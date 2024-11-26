@@ -2,10 +2,10 @@ package dal
 
 import (
 	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/sirupsen/logrus"
 	"github.com/zlllgp/vegas/internal/application/config"
 	"github.com/zlllgp/vegas/internal/infrastructure/dal/wk/query"
 	"gorm.io/gorm/logger"
-	"log"
 	"os"
 	"time"
 
@@ -22,14 +22,23 @@ var (
 gorm https://gorm.io/zh_CN/docs/index.html
 */
 func InitWkDB() {
+	// 创建日志文件
+	logFile, err := os.OpenFile("./log/sql.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		logrus.Fatalf("Failed to open log file: %v", err)
+	}
+	//defer logFile.Close()
+	logrus.SetOutput(logFile)
+
 	newLogger := logger.New(
-		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		//log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		logrus.StandardLogger(),
 		logger.Config{
-			SlowThreshold:             time.Second,   // Slow SQL threshold
-			LogLevel:                  logger.Silent, // Log level
-			IgnoreRecordNotFoundError: true,          // Ignore ErrRecordNotFound error for logger
-			ParameterizedQueries:      true,          // Don't include params in the SQL log
-			Colorful:                  false,         // Disable color
+			SlowThreshold:             time.Second, // Slow SQL threshold
+			LogLevel:                  logger.Info, // Log level
+			IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
+			ParameterizedQueries:      true,        // Don't include params in the SQL log
+			Colorful:                  false,       // Disable color
 		},
 	)
 

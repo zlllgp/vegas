@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/zlllgp/vegas/internal/domain/entity"
@@ -45,8 +46,9 @@ func (s *DrawService) Draw(ctx context.Context, userId int64, eh string) (*entit
 	if !safe {
 		return nil, errors.New("not safe")
 	}
+	var activity *entity.Activity
 	// first local cache
-	activity, ok := s.cacheRep.Get("activity:" + strconv.FormatInt(activityId, 10))
+	cacheActivity, ok := s.cacheRep.Get("activity:" + strconv.FormatInt(activityId, 10))
 	if !ok {
 		//second redis cache
 		rActivity, err := s.redisRep.GetActivity(ctx, activityId)
@@ -57,16 +59,21 @@ func (s *DrawService) Draw(ctx context.Context, userId int64, eh string) (*entit
 				return nil, errors.New("activity not found")
 			}
 			dActivity := entity.NewActivityWithModel(activityDo)
-			klog.Infof("activity from db , %+v", activity)
+			activity = dActivity
+			klog.Infof("activity from db , %+v", dActivity)
 			s.redisRep.StoreActivity(ctx, activityId, dActivity)
 			s.cacheRep.Set("activity:"+strconv.FormatInt(activityId, 10), dActivity, time.Until(time.Now()))
-			activity = dActivity
 		} else {
 			activity = rActivity
-			klog.Infof("activity from redis ,  %+v", activity)
+			klog.Infof("activity from redis ,  %+v", rActivity)
 			s.cacheRep.Set("activity:"+strconv.FormatInt(activityId, 10), rActivity, time.Until(time.Now()))
 		}
 	} else {
+		if b, ok := cacheActivity.([]uint8); ok {
+			if err := json.Unmarshal(b, &activity); err != nil {
+				klog.Errorf("unmarshal activity err:%v", err)
+			}
+		}
 		klog.Infof("activity from cache ,  %+v", activity)
 	}
 
