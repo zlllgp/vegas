@@ -27,4 +27,3 @@ RUN chmod -R 755 $APP_HOME
 WORKDIR $APP_HOME
 EXPOSE 8080
 ENTRYPOINT ["sh","/home/admin/bootstrap.sh"]
-#ENTRYPOINT ["./home/admin/bin/vegas"] todo fix config dir not found
