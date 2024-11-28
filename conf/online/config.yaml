@@ -2,7 +2,7 @@ kitex:
   service: "vegas"
   address: "192.168.3.71:8888"
   log_level: info
-  log_file_name: "log/vegas.log"
+  log_file_name: "logs/vegas.log"
   log_max_size: 10
   log_max_age: 3
   log_max_backups: 50

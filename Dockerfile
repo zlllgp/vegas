@@ -18,7 +18,7 @@ ENV APP_NAME $APP_NAME
 ENV USER=admin \
     GROUP=users
 ENV APP_HOME=/home/$USER
-RUN mkdir -p $APP_HOME/bin $APP_HOME/log
+RUN mkdir -p $APP_HOME/bin $APP_HOME/logs
 #RUN chown -R $USER:$GROUP $APP_HOME && chmod -R 755 $APP_HOME
 COPY --from=build /build/conf $APP_HOME/conf
 COPY --from=build /build/output/bin/vegas $APP_HOME/bin/vegas

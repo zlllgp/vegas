@@ -9,7 +9,7 @@ else
 fi
 
 export KITEX_RUNTIME_ROOT=$RUNTIME_ROOT
-export KITEX_LOG_DIR="$RUNTIME_ROOT/log"
+export KITEX_LOG_DIR="$RUNTIME_ROOT/logs"
 
 if [ ! -d "$KITEX_LOG_DIR/app" ]; then
     mkdir -p "$KITEX_LOG_DIR/app"
