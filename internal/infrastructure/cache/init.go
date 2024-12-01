@@ -5,6 +5,8 @@ import (
 	"github.com/allegro/bigcache/v3"
 	"github.com/bluele/gcache"
 	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/dtm-labs/rockscache"
+	"github.com/zlllgp/vegas/internal/infrastructure/redis"
 	"log"
 	"time"
 )
@@ -12,6 +14,7 @@ import (
 var (
 	bigCache *bigcache.BigCache
 	gCache   gcache.Cache
+	RCache   *rockscache.Client
 )
 
 func InitBigCache() {
@@ -38,4 +41,9 @@ func InitGCache() {
 	gCache = gcache.New(200).
 		LRU().
 		Build()
+}
+
+func InitRocksCache() {
+	RCache = rockscache.NewClient(redis.GetRdb(), rockscache.NewDefaultOptions())
+	klog.Infof("rCache init success stats")
 }

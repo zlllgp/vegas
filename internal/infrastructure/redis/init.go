@@ -26,3 +26,7 @@ func InitRedis() {
 		panic(err)
 	}
 }
+
+func GetRdb() *redis.Client {
+	return rdb
+}

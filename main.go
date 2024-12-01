@@ -131,7 +131,8 @@ func kitexInit() (opts []server.Option) {
 	dal.InitYodaDB()
 	redis.InitRedis()
 	//cache init
-	cache.InitBigCache()
-	cache.InitGCache()
+	//cache.InitBigCache()
+	//cache.InitGCache()
+	cache.InitRocksCache()
 	return
 }

@@ -5,8 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/spf13/cast"
 	"github.com/zlllgp/vegas/internal/domain/entity"
 	"github.com/zlllgp/vegas/internal/domain/repository"
+	"github.com/zlllgp/vegas/internal/infrastructure/cache"
 	"github.com/zlllgp/vegas/pkg/errno"
 	"strconv"
 	"time"
@@ -30,6 +32,12 @@ func NewActivityServiceImpl(
 }
 
 func (s *ActivityServiceImpl) GetActivity(ctx context.Context, activityId int64) (*entity.Activity, error) {
+	return s.cacheGetActivity(ctx, activityId)
+
+	//return s.localCacheGetActivity(ctx, activityId)
+}
+
+func (s *ActivityServiceImpl) localCacheGetActivity(ctx context.Context, activityId int64) (*entity.Activity, error) {
 	var activity *entity.Activity
 	// first local cache
 	cacheActivity, ok := s.cacheRepo.Get("activity:" + strconv.FormatInt(activityId, 10))
@@ -59,6 +67,25 @@ func (s *ActivityServiceImpl) GetActivity(ctx context.Context, activityId int64)
 			}
 		}
 		klog.Infof("activity from cache ,  %+v", activity)
+	}
+
+	return activity, nil
+}
+
+func (s *ActivityServiceImpl) cacheGetActivity(ctx context.Context, activityId int64) (*entity.Activity, error) {
+	var activity *entity.Activity
+	// use rcache with redis + db
+
+	activityStr, err := cache.RCache.Fetch("activity:"+strconv.FormatInt(activityId, 10), time.Hour, func() (string, error) {
+		activityDo, err := s.actRepo.GetById(ctx, activityId)
+		klog.Infof("activity from db , %+v", activityDo)
+		if err != nil || activityDo == nil {
+			return "", errors.New("activity not found")
+		}
+		return cast.ToString(activityDo), nil
+	})
+	if err != nil {
+		json.Unmarshal([]byte(activityStr), &activity)
 	}
 	return activity, nil
 }
